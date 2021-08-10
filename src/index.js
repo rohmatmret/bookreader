@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import LoginForm from './components/LoginForm';
+import Reader from './Reader';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact component={LoginForm}/>
+        <Route path="/dashboard" exact component={App}/>
+        <Route path="/reader" exact component={Reader}></Route>
+        <Redirect from="*" to="/"/>
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

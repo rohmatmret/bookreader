@@ -1,12 +1,25 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
+import {Switch, Route, Redirect } from 'react-router-dom';
+import Header from './components/Header';
+import SideMenu from './components/SideMenu';
+import Dashboard from './Dashboard';
+import './App.css';
 
-import ViewBooks from "./components/reader";
 function App() {
   return (
-    <div className="App">
-      <ViewBooks />
-    </div>
+    <>
+      <SideMenu/>
+      <div className="relative md:ml-64">
+        <Header/>
+        <div className="bg-blue-500 h-96 pt-12">
+        <div className="px-4 md:px-10 mx-auto w-full">
+          <Switch>
+            <Route path="/dashboard" exact component={Dashboard}/>
+          </Switch>
+        </div>
+        </div>
+      </div>
+    </>
   );
 }
 
