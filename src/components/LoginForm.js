@@ -17,8 +17,7 @@ const LoginForm = () => {
   };
 
   const [state, setState] = useState(FormLogin);
-
-  const secretPassword = "5gvi-ojhgf%^&YGBNeds1{";
+  const secretPassword = process.env.SALT_SECRET;
 
   const HashPassword = (password) => {
     const hash = sha1.create();
