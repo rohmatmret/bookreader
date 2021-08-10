@@ -6,6 +6,9 @@
 // Create the BookReader object
 import $ from "jquery";
 import BookReader from "../BookReader";
+import '../BookReader.css';
+import '../BookReaderDemo.css';
+
 export default function instantiateBookReader(selector, extraOptions) {
   selector = selector || "#BookReader";
   extraOptions = extraOptions || {};

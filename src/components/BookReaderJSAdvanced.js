@@ -5,6 +5,8 @@
 
 // Create the BookReader object
 import BookReader from "../BookReader";
+import '../BookReader.css';
+import '../BookReaderDemo.css';
 
 export default function ReaderLoad(selector) {
   selector = selector || "BookReader1";

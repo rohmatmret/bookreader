@@ -21,4 +21,4 @@ function AdvanceLoad() {
   return <div id="BookReader1">BookReader1</div>;
 }
 
-export default AdvanceLoad;
+export default ViewBooks;
