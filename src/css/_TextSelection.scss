@@ -1,0 +1,32 @@
+.textSelectionSVG {
+    // Make it so right-clicking on "blank" part of svg sends events to the image (for saving)
+    pointer-events: none;
+    .BRwordElement { pointer-events: all; }
+    &.selectingSVG { 
+        pointer-events: auto; 
+        cursor: text;
+    }
+   
+    // Highlight colors for text selection layer ( these 2 properties do not work if joined)
+    .BRwordElement::selection {
+        background: hsla(210, 74%, 62%, 0.4);
+    }
+    .BRwordElement::-moz-selection {
+        background: hsla(210, 74%, 62%, 0.4);
+        color: transparent;
+    }
+
+    .BRparagElement {
+        fill: transparent;
+        cursor: text;
+        white-space: pre;
+        font-family: Georgia, serif;
+    }
+}
+
+// Makes page image unselectable
+.BRpagecontainer img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
