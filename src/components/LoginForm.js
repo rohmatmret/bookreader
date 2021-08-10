@@ -1,5 +1,6 @@
 import image from "../assets/Aset_halaman_Login.png";
 import logo from "../assets/logo.png";
+import {RefreshIcon} from '@heroicons/react/outline';
 import { React, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -16,6 +17,7 @@ const LoginForm = () => {
     password: null,
   };
 
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState(FormLogin);
   const secretPassword = process.env.SALT_SECRET;
 
@@ -35,6 +37,8 @@ const LoginForm = () => {
       password: encPassword,
     };
 
+    setLoading(true);
+
     axios
       .post(
         "https://scoopadm.apps-foundry.com/scoopcor/api/v1/auth/login",
@@ -44,6 +48,7 @@ const LoginForm = () => {
         setState(FormLogin);
         localStorage.setItem("token", res.data.realm + " " + res.data.token);
         localStorage.setItem("username", res.data.first_name);
+        setLoading(false);
         window.location.href = "/dashboard";
       })
       .catch((err) => {
@@ -95,9 +100,10 @@ const LoginForm = () => {
             </div>
             <div className="text-center">
               <button
-                className="bg-gray-100 px-24 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold"
+                className={state.username && state.password ? "bg-blue-500 px-16 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex mx-auto gap-2" : "bg-gray-100 px-24 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold flex mx-auto gap-2"}
                 onClick={handleSubmit}
               >
+                <RefreshIcon className={loading ? "animate-spin w-5 h-5 text-white" : "hidden"}/>
                 Masuk
               </button>
             </div>
