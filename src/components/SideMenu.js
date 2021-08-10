@@ -109,7 +109,7 @@ const PremiumList = () => {
     { id: 112026, name: "Paket Grasindo SD Kelas 3" },
     { id: 112027, name: "Paket Grasindo SD Kelas 4" },
     { id: 112028, name: "Paket Grasindo SD Kelas 5" },
-    { id: 12029, name: "Paket Grasindo SD Kelas 6" },
+    { id: 112029, name: "Paket Grasindo SD Kelas 6" },
   ];
   return data;
 };
