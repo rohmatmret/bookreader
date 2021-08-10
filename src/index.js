@@ -7,15 +7,16 @@ import LoginForm from "./components/LoginForm";
 import Reader from "./Reader";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
+import Premium from "./pages/Premium";
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter forceRefresh={true}>
       <Switch>
         <Route path="/login" exact component={LoginForm} />
-        <Route path="/" exact component={App} />
+        <Route path={["/premium/:offerid"]} exac component={Premium} />
+        <Route path="/" component={App} />
         <Route path="/reader" exact component={Reader}></Route>
-        <Redirect from="*" to="/" />
+        {/* <Redirect from="*" to="/" /> */}
       </Switch>
     </BrowserRouter>
   </React.StrictMode>,

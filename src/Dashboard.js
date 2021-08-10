@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CardItem from "./components/CardItem";
-import DummyBooks from "./dummy.json";
+
 import axios from "axios";
 /**
  *
