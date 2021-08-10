@@ -7,8 +7,10 @@ import UserDropdown from "./UserDropdown";
 const SideMenu = () => {
   const [collapseShow, setCollapseShow] = useState("hidden");
   const [userName, setUserName] = useState("");
+  const [Premium, setPremium] = useState("");
   useEffect(() => {
     setUserName(localStorage.getItem("username"));
+    setPremium(PremiumList());
   }, []);
   return (
     <>
@@ -71,71 +73,27 @@ const SideMenu = () => {
             {/* Navigation */}
 
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-              <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/dashboard") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/admin/dashboard"
-                >
-                  <i
-                    className={
-                      "fas fa-tv mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/dashboard") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Paket Grasindo Kelas 1
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/settings") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/admin/settings"
-                >
-                  <i
-                    className={
-                      "fas fa-tools mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/settings") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Paket Grasindo Kelas 2
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/tables") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/admin/tables"
-                >
-                  <i
-                    className={
-                      "fas fa-table mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/tables") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Paket Grasindo Kelas 3
-                </Link>
-              </li>
+              {Premium
+                ? Premium.map((p) => {
+                    return (
+                      <li className="items-center">
+                        <Link
+                          className={
+                            "text-xs uppercase py-3 font-bold block " +
+                            (window.location.href.indexOf(
+                              "/premium/" + p.id
+                            ) !== -1
+                              ? "text-lightBlue-500 hover:text-lightBlue-600"
+                              : "text-blueGray-700 hover:text-blueGray-500")
+                          }
+                          to={"/premium/" + p.id}
+                        >
+                          {p.name}
+                        </Link>
+                      </li>
+                    );
+                  })
+                : ""}
             </ul>
           </div>
         </div>
@@ -144,4 +102,15 @@ const SideMenu = () => {
   );
 };
 
+const PremiumList = () => {
+  let data = [
+    { id: 112023, name: "Paket Grasindo SD Kelas 1" },
+    { id: 112024, name: "Paket Grasindo SD Kelas 2" },
+    { id: 112026, name: "Paket Grasindo SD Kelas 3" },
+    { id: 112027, name: "Paket Grasindo SD Kelas 4" },
+    { id: 112028, name: "Paket Grasindo SD Kelas 5" },
+    { id: 112029, name: "Paket Grasindo SD Kelas 6" },
+  ];
+  return data;
+};
 export default SideMenu;
