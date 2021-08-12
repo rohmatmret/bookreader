@@ -10,14 +10,23 @@ import axios from "axios";
  */
 export default function PremiumOffers() {
   const [isLoading, setLoading] = useState(true);
+  const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
   const [slug, setSlug] = useState("");
   let params = useParams();
+  
+  const filterBook = Items !== '' ? Items.data.filter((books) => {
+    return (
+      books.name.toLocaleLowerCase().indexOf(searchItems.toLowerCase()) !== -1
+    );
+  }): '';
+
   useEffect(() => {
     setSlug(params.offerid);
-    console.log(params);
     OfferBuffets(params.offerid);
-  }, []);
+  }, [Items]);
+
+  
 
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
@@ -30,6 +39,7 @@ export default function PremiumOffers() {
       setLoading(false);
     }
   };
+
   return (
     <>
       <SideMenu />
@@ -42,26 +52,33 @@ export default function PremiumOffers() {
                 type="search"
                 placeholder="Search"
                 className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-500 placeholder-opacity-50 rounded-full focus:outline-none"
+                onChange={(e) => {
+                  setSearchItems(e.target.value);
+                }}
               />
             </form>
-            <div className="flex grid lg:grid-cols-6 lg:gap-4 md:grid-cols-3 md:gap-10 sm:grid-cols-3 grid-cols-1 gap-8 mx-14 sm:mx-auto">
+            <div className="flex grid lg:grid-cols-6 xl:grid-cols-5 lg:gap-0 xl:gap-6 md:grid-cols-3 md:gap-10 sm:grid-cols-3 grid-cols-1 gap-8 mx-14 sm:mx-auto">
               {!isLoading
                 ? Items
-                  ? Items.data.map((books) => {
+                  ? filterBook.map((books) => {
                       return (
                         <CardItem
                           image={books.images}
                           title={books.name}
                           author={books.id}
                           url={books.images}
+                          key={books.id}
                         />
                       );
                     })
                   : ""
-                : "Loading..."}
+                : 
+                    <div>
+                      Loading...
+                    </div>
+                }
             </div>
           </div>
-          <div>lorem ipsum dolor sit</div>
         </div>
       </div>
     </>

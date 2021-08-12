@@ -2,6 +2,7 @@ import image from "../assets/Aset_halaman_Login.png";
 import logo from "../assets/logo.png";
 import { React, useState } from "react";
 import axios from "axios";
+import {RefreshIcon} from '@heroicons/react/outline'
 import { useHistory } from "react-router-dom";
 import { func } from "prop-types";
 const sha1 = require("js-sha1");
@@ -17,17 +18,20 @@ const LoginForm = () => {
   };
 
   const [state, setState] = useState(FormLogin);
-  const secretPassword = process.env.SALT_SECRET;
+  const [loading, setLoading]=useState(false);
+  // const secretPassword = process.env.SALT_SECRET;
+  const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
 
   const HashPassword = (password) => {
     const hash = sha1.create();
     let encPassword = hash.update(secretPassword + password).hex();
+    console.log(encPassword);
     return encPassword;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setLoading(true);
     let encPassword = HashPassword(state.password);
 
     let data = {
@@ -44,6 +48,7 @@ const LoginForm = () => {
         setState(FormLogin);
         localStorage.setItem("token", res.data.realm + " " + res.data.token);
         localStorage.setItem("username", res.data.first_name);
+        setLoading(false)
         window.location.href = "/dashboard";
       })
       .catch((err) => {
@@ -95,15 +100,16 @@ const LoginForm = () => {
             </div>
             <div className="text-center">
               <button
-                className="bg-gray-100 px-24 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold"
+                className={state.username && state.password ? "bg-blue-500 px-20 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto" : "bg-gray-100 px-20 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold"}
                 onClick={handleSubmit}
               >
+                <RefreshIcon className={loading ? "animate-spin w-5 h-5 text-white" : "hidden"}/>
                 Masuk
               </button>
             </div>
             <div className="text-center text-sm ">
               baru di Gramedia Digital?
-              <a href="#" className="text-blue-600 font-bold">
+              <a href="https://ebooks.gramedia.com/id/register" className="text-blue-600 font-bold">
                 Daftar
               </a>
             </div>
