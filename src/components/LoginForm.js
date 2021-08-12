@@ -5,7 +5,9 @@ import axios from "axios";
 import {RefreshIcon} from '@heroicons/react/outline'
 import { useHistory } from "react-router-dom";
 import { func } from "prop-types";
+import Cookies from 'js-cookie';
 const sha1 = require("js-sha1");
+
 
 function Dashboard() {
   let history = useHistory();
@@ -46,8 +48,10 @@ const LoginForm = () => {
       )
       .then((res) => {
         setState(FormLogin);
-        localStorage.setItem("token", res.data.realm + " " + res.data.token);
-        localStorage.setItem("username", res.data.first_name);
+        // localStorage.setItem("token", res.data.realm + " " + res.data.token);
+        // localStorage.setItem("username", res.data.first_name);
+        Cookies.set("token", res.data.realm + " " + res.data.token)
+        Cookies.set("username", res.data.first_name);
         setLoading(false)
         window.location.href = "/dashboard";
       })

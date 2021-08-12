@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import SideMenu from "../components/SideMenu";
 import axios from "axios";
+import Cookies from 'js-cookie';
+
 /**
  *
  * @returns offers/items?offer_id=112023&item_type=2
@@ -31,7 +33,7 @@ export default function PremiumOffers() {
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
       `https://scoopadm.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
-      { headers: { Authorization: localStorage.getItem("token") } }
+      { headers: { Authorization: Cookies.get('token') } }
     );
 
     if (Result) {

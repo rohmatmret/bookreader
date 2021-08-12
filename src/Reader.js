@@ -8,7 +8,6 @@ function Reader() {
 
   useEffect(()=>{
     setSlug(params.itemid)
-    console.log(params, 'params')
   })
   return (
     <div className="App">
