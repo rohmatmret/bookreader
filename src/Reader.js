@@ -1,10 +1,17 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useParams } from "react-router-dom";
 
 import ViewBooks from "./components/reader";
 function Reader() {
+  const [slug, setSlug] = useState("");
+  let params = useParams();
+
+  useEffect(()=>{
+    setSlug(params.itemid)
+  })
   return (
     <div className="App">
-      <ViewBooks />
+      <ViewBooks params={slug}/>
     </div>
   );
 }

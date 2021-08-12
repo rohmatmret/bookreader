@@ -10,7 +10,7 @@ const UserDropdown = (props) => {
           <div>
             <button
               type="button"
-              className="float-right max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              className="float-right max-w-xs rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white text-white space-x-4"
               id="user-menu-button"
               aria-expanded="false"
               aria-haspopup="true"
@@ -18,6 +18,7 @@ const UserDropdown = (props) => {
                 setMenu(!menu);
               }}
             >
+              <span className="text-lg font-normal">Username</span>
               <img
                 className="h-8 w-8 rounded-full"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"

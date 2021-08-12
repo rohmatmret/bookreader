@@ -1,15 +1,16 @@
 import React from "react";
 import Icon from "../assets/book-reading.png";
+import { Link } from "react-router-dom";
 
 const CardItem = ({ image, title, author, url }) => {
   return (
-    <div className="container w-48 shadow-lg p-2 rounded-md bg-white">
+    <div className="container w-48 shadow-lg p-2 rounded-md bg-white lg:my-2 xl:my-auto">
       <div className="w-11/12 mx-auto mb-4 shadow">
         <img src={image} alt={title} className="rounded" />
       </div>
       <div className="space-y-4">
         <a href={url} rel="noreferrer" target="_blank">
-          <h3 className="text-sm font-bold h-20">{title.substr(18)}</h3>
+          <h3 className="text-sm font-bold h-20">{title.substr(0)}</h3>
         </a>
       </div>
       <div className="mb-6">
@@ -21,7 +22,13 @@ const CardItem = ({ image, title, author, url }) => {
           alt="icon-button"
           className="text-white h-6 my-auto ml-auto mr-4"
         />
-        <button className="text-white font-bold text-left">Baca</button>
+        <button className="text-white font-bold text-left">
+        <Link
+            to={"/reader/" + author}
+          >
+            Baca
+          </Link>
+        </button>
       </div>
     </div>
   );

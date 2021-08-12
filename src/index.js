@@ -10,12 +10,12 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Premium from "./pages/Premium";
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter forceRefresh={true}>
+    <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={LoginForm} />
         <Route path={["/premium/:offerid"]} exac component={Premium} />
+        <Route path={["/reader/:itemid"]} exact component={Reader}></Route>
         <Route path="/" component={App} />
-        <Route path="/reader" exact component={Reader}></Route>
         {/* <Redirect from="*" to="/" /> */}
       </Switch>
     </BrowserRouter>
