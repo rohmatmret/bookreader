@@ -14,7 +14,7 @@ ReactDOM.render(
       <Switch>
         <Route path="/login" exact component={LoginForm} />
         <Route path={["/premium/:offerid"]} exac component={Premium} />
-        <Route path={["/reader/:offerid"]} exact component={Reader}></Route>
+        <Route path={["/reader/:itemid"]} exact component={Reader}></Route>
         <Route path="/" component={App} />
         {/* <Redirect from="*" to="/" /> */}
       </Switch>
