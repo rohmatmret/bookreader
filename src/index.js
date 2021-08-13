@@ -8,17 +8,22 @@ import Reader from "./Reader";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Premium from "./pages/Premium";
+import { Provider } from "react-redux";
+import {store} from './store';
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/login" exact component={LoginForm} />
-        <Route path={["/premium/:offerid"]} exac component={Premium} />
-        <Route path={["/reader/:itemid"]} exact component={Reader}></Route>
-        <Route path="/" component={App} />
-        {/* <Redirect from="*" to="/" /> */}
-      </Switch>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/login" exact component={LoginForm} />
+          <Route path={["/premium/:offerid"]} exac component={Premium} />
+          <Route path={["/reader/:itemid"]} exact component={Reader}></Route>
+          <Route path="/" component={App} />
+          {/* <Redirect from="*" to="/" /> */}
+        </Switch>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

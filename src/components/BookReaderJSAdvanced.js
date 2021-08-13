@@ -8,12 +8,15 @@ import BookReader from "../BookReader";
 import '../BookReader.css';
 import '../BookReaderDemo.css';
 
-export default function ReaderLoad(selector) {
+
+export default function ReaderLoad(selector,extraOptions, pageCount, token) {
   selector = selector || "BookReader1";
+  extraOptions = Number(extraOptions.params) 
+
   var options = {
     // Total number of leafs
     getNumLeafs: function () {
-      return 15;
+      return pageCount;
     },
 
     // Return the width of a given page.  Here we assume all images are 800 pixels wide
@@ -32,13 +35,9 @@ export default function ReaderLoad(selector) {
       // reduce and rotate are ignored in this simple implementation, but we
       // could e.g. look at reduce and load images from a different directory
       // or pass the information to an image server
-      var leafStr = "000";
-      var imgStr = (index + 1).toString();
-      var re = new RegExp("0{" + imgStr.length + "}$");
-      var url =
-        "http://archive.org/download/BookReader/img/page" +
-        leafStr.replace(re, imgStr) +
-        ".jpg";
+      if(extraOptions !== 0){
+        var url =`https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/web-reader/${index+1}.jpg`
+      }
       return url;
     },
 
@@ -91,14 +90,14 @@ export default function ReaderLoad(selector) {
     // Book title and the URL used for the book title link
     bookTitle: "BookReader Advanced Demo",
     bookUrl: "../index.html",
-    bookUrlText: "Back to Demos",
+    bookUrlText: "Back to Home",
     bookUrlTitle: "This is the book URL title",
     // thumbnail is optional, but it is used in the info dialog
-    thumbnail: "//archive.org/download/BookReader/img/page014.jpg",
+    thumbnail: extraOptions !== 0 && `https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/web-reader/1.jpg`,
     // Metadata is optional, but it is used in the info dialog
     metadata: [
       { label: "Title", value: "Open Library BookReader Presentation" },
-      { label: "Author", value: "Internet Archive" },
+      { label: "Author", value: "Gramedia" },
       {
         label: "Demo Info",
         value:
@@ -110,17 +109,18 @@ export default function ReaderLoad(selector) {
     mobileNavTitle: "BookReader demo",
 
     // Override the path used to find UI images
-    imagesBaseURL: "../BookReader/images/",
+    // imagesBaseURL: "../BookReader/images/",
 
-    getEmbedCode: function (frameWidth, frameHeight, viewParams) {
-      return "Embed code not supported in bookreader demo.";
-    },
+    // getEmbedCode: function (frameWidth, frameHeight, viewParams) {
+    //   return "Embed code not supported in bookreader demo.";
+    // },
 
     // Note previously the UI param was used for mobile, but it's going to be responsive
     // embed === iframe
     el: selector,
     ui: "full", // embed, full (responsive)
   };
+  
   var br = new BookReader(options);
 
   // Let's go!
