@@ -43,7 +43,7 @@ const LoginForm = () => {
 
     axios
       .post(
-        "https://scoopadm.apps-foundry.com/scoopcor/api/v1/auth/login",
+        "https://dev.apps-foundry.com/scoopcor/api/v1/auth/login",
         data
       )
       .then((res) => {

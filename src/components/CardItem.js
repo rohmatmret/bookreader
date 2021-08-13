@@ -1,8 +1,17 @@
 import React from "react";
 import Icon from "../assets/book-reading.png";
 import { Link } from "react-router-dom";
+import {useDispatch} from 'react-redux';
+import { setPageCount } from "../rootSlice";
 
-const CardItem = ({ image, title, author, url }) => {
+const CardItem = ({ image, title, author, url, pageCount }) => {
+  const dispatch = useDispatch();
+  // const basePageCount = useSelector(state => state.pageCount);
+
+  const handleStorePageCount = () => {
+    dispatch(setPageCount(pageCount))
+  }
+
   return (
     <div className="container w-48 shadow-lg p-2 rounded-md bg-white lg:my-2 xl:my-auto">
       <div className="w-11/12 mx-auto mb-4 shadow">
@@ -22,7 +31,7 @@ const CardItem = ({ image, title, author, url }) => {
           alt="icon-button"
           className="text-white h-6 my-auto ml-auto mr-4"
         />
-        <button className="text-white font-bold text-left">
+        <button className="text-white font-bold text-left" onClick={(e)=>{handleStorePageCount()}}>
         <Link
             to={"/reader/" + author}
           >

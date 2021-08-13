@@ -26,13 +26,13 @@ export default function PremiumOffers() {
   useEffect(() => {
     setSlug(params.offerid);
     OfferBuffets(params.offerid);
-  }, [Items]);
+  }, []);
 
   
 
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
-      `https://scoopadm.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
+      `https://dev.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
       { headers: { Authorization: Cookies.get('token') } }
     );
 
@@ -70,6 +70,7 @@ export default function PremiumOffers() {
                           author={books.id}
                           url={books.images}
                           key={books.id}
+                          pageCount={books.page_count}
                         />
                       );
                     })
