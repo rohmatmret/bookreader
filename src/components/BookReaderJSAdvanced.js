@@ -7,11 +7,38 @@
 import BookReader from "../BookReader";
 import '../BookReader.css';
 import '../BookReaderDemo.css';
+import axios from 'axios';
 
 
-export default function ReaderLoad(selector,extraOptions, pageCount, token) {
+export default async function ReaderLoad(selector,extraOptions, pageCount, token) {
   selector = selector || "BookReader1";
   extraOptions = Number(extraOptions.params) 
+
+  const ImageItems = async (index) => {
+    let Result = await axios.get(
+      `https://dev.apps-foundry.com/scoopcor/api/v1/items/197200/web-reader/${index}.jpg`,
+      { headers: { Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25zIjpbXSwidXNlcl9pZCI6MTg1NDgxOCwiZXhwIjoxNjI5MDAyMDQyLCJyb2xlcyI6WzldLCJpc3MiOiJTQ09PUCIsInNpZyI6ImIwNzI3NjdlYzU0ZGNkNWFkODU1MGFjMmNjODIzMWRjODlkMTg1NWEiLCJleHBpcmVfdGltZWRlbHRhIjowLCJ1c2VyX25hbWUiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZW1haWwiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZGV2aWNlX2lkIjpudWxsfQ.DNIoz8w-h1PpyLPkmziz9vzmc9tyDXJgamQZ7aQ0wdY' }, responseType: 'blob' }
+    )
+    let image = window.URL.createObjectURL(Result.data);
+    return image
+  };
+
+  var abc = []
+  var def = []
+  var k;
+  abc.push(
+    await axios.get(`https://dev.apps-foundry.com/scoopcor/api/v1/items/197200/web-reader/1.jpg`,
+    { headers: { Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25zIjpbXSwidXNlcl9pZCI6MTg1NDgxOCwiZXhwIjoxNjI5MDAyMDQyLCJyb2xlcyI6WzldLCJpc3MiOiJTQ09PUCIsInNpZyI6ImIwNzI3NjdlYzU0ZGNkNWFkODU1MGFjMmNjODIzMWRjODlkMTg1NWEiLCJleHBpcmVfdGltZWRlbHRhIjowLCJ1c2VyX25hbWUiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZW1haWwiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZGV2aWNlX2lkIjpudWxsfQ.DNIoz8w-h1PpyLPkmziz9vzmc9tyDXJgamQZ7aQ0wdY' }, responseType: 'blob' }
+    ).then(response => {
+      // do something with response
+      let image = window.URL.createObjectURL(response.data);
+      def.push(image);
+    })
+  )
+
+  Promise.all(abc).then(() => console.log(def));
+  k = def;
+
 
   var options = {
     // Total number of leafs
@@ -35,11 +62,12 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
       // reduce and rotate are ignored in this simple implementation, but we
       // could e.g. look at reduce and load images from a different directory
       // or pass the information to an image server
-      if(extraOptions !== 0){
-        var url =`https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/web-reader/${index+1}.jpg`
-      }
-      return url;
-    },
+      // if(extraOptions !== 0){
+      //   var url =`https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/ebook-reader/${index+1}.jpg`
+      // }
+      var url = Object.assign({}, k)
+      return url[index];
+    }, 
 
     // Return which side, left or right, that a given page should be displayed on
     getPageSide: function (index) {
@@ -93,7 +121,7 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
     bookUrlText: "Back to Home",
     bookUrlTitle: "This is the book URL title",
     // thumbnail is optional, but it is used in the info dialog
-    thumbnail: extraOptions !== 0 && `https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/web-reader/1.jpg`,
+    thumbnail: extraOptions !== 0 && `https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/ebook-reader/1.jpg`,
     // Metadata is optional, but it is used in the info dialog
     metadata: [
       { label: "Title", value: "Open Library BookReader Presentation" },
@@ -119,6 +147,10 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
     // embed === iframe
     el: selector,
     ui: "full", // embed, full (responsive)
+    loadWithAjax: true,
+    getAjaxHeaders: {
+      Authorization: token
+    }
   };
   
   var br = new BookReader(options);
