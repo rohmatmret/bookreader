@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "../assets/book-reading.png";
 import { Link } from "react-router-dom";
 import {useDispatch} from 'react-redux';
-import { setPageCount } from "../rootSlice";
+import { setPageCount, setTitle } from "../rootSlice";
 
 const CardItem = ({ image, title, author, url, pageCount }) => {
   const dispatch = useDispatch();
@@ -10,6 +10,7 @@ const CardItem = ({ image, title, author, url, pageCount }) => {
 
   const handleStorePageCount = () => {
     dispatch(setPageCount(pageCount))
+    dispatch(setTitle(title))
   }
 
   return (

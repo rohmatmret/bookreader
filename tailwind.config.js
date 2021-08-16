@@ -3,7 +3,7 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   purge: [],
   presets: [],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     screens: {
       sm: '640px',
@@ -538,6 +538,7 @@ module.exports = {
     }),
     minHeight: {
       0: '0px',
+      14: '3.5rem',
       full: '100%',
       screen: '100vh',
     },
@@ -832,11 +833,11 @@ module.exports = {
     backdropBlur: ['responsive'],
     backdropBrightness: ['responsive'],
     backdropContrast: ['responsive'],
+    backdropDropShadow: ['responsive'],
     backdropFilter: ['responsive'],
     backdropGrayscale: ['responsive'],
     backdropHueRotate: ['responsive'],
     backdropInvert: ['responsive'],
-    backdropOpacity: ['responsive'],
     backdropSaturate: ['responsive'],
     backdropSepia: ['responsive'],
     backgroundAttachment: ['responsive'],
@@ -969,3 +970,4 @@ module.exports = {
   },
   plugins: [],
 }
+

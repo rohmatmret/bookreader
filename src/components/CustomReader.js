@@ -1,0 +1,229 @@
+import React, {useState, useEffect, useRef} from 'react';
+import {MenuIcon, ArrowsExpandIcon, SearchIcon, CogIcon, ChevronLeftIcon, ZoomInIcon, ZoomOutIcon} from '@heroicons/react/outline';
+import useDarkMode from '../SetThemes.js';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
+const screenfull = require('screenfull');
+
+
+
+const Reader = (params) => {
+    const [menu, setMenu] = useState(false);
+    const [search, setSearch] = useState(false);
+    const [colorTheme, setTheme] =useDarkMode();
+    const [layout, setLayout] = useState(false)
+    const [items, setItems]         = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasMore, setHasMore]     = useState(true);
+    const [pages, setPages]         = useState(1);
+    const observer                  = useRef();
+    const [zoomIn, setZoomIn] = useState(false);
+    const [zoomOut, setZoomOut] = useState(false);
+    const totalPage = useSelector(state => state.pageCount)
+    const title = useSelector(state => state.title)
+    const TOTAL_PAGES = totalPage;
+    const [pageNumber, setPageNumber] = useState(1);
+    console.log(title)
+    
+
+
+    const Item = ({ children, reference }) => {
+        return (
+            <div ref={reference}>
+                {children}
+            </div>
+        );
+    };
+    
+    const Loader = () => {
+        return (
+            <div className="w-full md:w-3/5 mx-auto p-4 items-center text-center mb-4">
+                <svg class="animate-spin h-8 w-8 mx-auto dark:text-white text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+        )
+    }
+
+    const fetchData = async (index) => {
+        setIsLoading(true);
+        console.log(index, 'index');
+        var slug = params.params
+        console.log(slug)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        await axios.get(`https://dev.apps-foundry.com/scoopcor/api/v1/items/${Number(slug)}/web-reader/${index}.jpg`,
+        { headers: { Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25zIjpbXSwidXNlcl9pZCI6MTg1NDgxOCwiZXhwIjoxNjI5MTc1MjQwLCJyb2xlcyI6WzldLCJpc3MiOiJTQ09PUCIsInNpZyI6ImIwNzI3NjdlYzU0ZGNkNWFkODU1MGFjMmNjODIzMWRjODlkMTg1NWEiLCJleHBpcmVfdGltZWRlbHRhIjowLCJ1c2VyX25hbWUiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZW1haWwiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZGV2aWNlX2lkIjpudWxsfQ.ugfMEe3gGwI0scvua0c0JtoNz2D7MNbAwsPQ35SzO-Q' }, responseType: 'blob' }
+      ).then((response)=>{
+        let image = window.URL.createObjectURL(response.data)
+        setItems([...items, `${image}`])
+        setIsLoading(false)
+      })
+    }
+
+    const preventDrag =  (e) => {
+        e.preventDefault()
+    }
+
+    useEffect(()=> {
+        //disable right click
+        document.addEventListener('contextmenu',(e) => {
+            e.preventDefault();
+        })
+
+        //disable print
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key == 'p') {
+                alert('This section is not allowed to print or export to PDF');
+                e.cancelBubble = true;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
+
+        document.addEventListener('scroll', (e) => {
+            var lastScrollTop = 0;
+            var st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop){
+                // downscroll code
+                var pages = Math.floor(st/1150);
+                setPageNumber(pages+1)
+             } else {
+                // upscroll code
+                var pages = Math.floor(st/1150);
+                setPageNumber(pages+1)
+             } 
+             lastScrollTop = st <= 0 ? 0 : st;
+        },false);
+
+        // var body = document.body,html = document.documentElement;
+        // var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+        // console.log(body, height)
+
+        // disable print screen
+        document.addEventListener('keyup', (e) => {
+            if (e.key == 'PrintScreen') {
+                navigator.clipboard.writeText('');
+                alert('Screenshots disabled!');
+            }
+        });
+
+
+        if(screenfull.isEnabled){
+            screenfull.on('change');
+        }
+        if(pages <= TOTAL_PAGES){
+            console.log(pages)
+            fetchData(pages);
+            // getItems(pages);
+            setPages((pages) => pages + 1);
+        }
+    },[])
+
+    const lastItemRef = React.useCallback(
+        (node) => {
+            if (isLoading) return;
+            if (observer.current) observer.current.disconnect();
+        
+            observer.current = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && hasMore) {
+                    if (pages < TOTAL_PAGES) {
+                        // getItems(pages);
+                        fetchData(pages);
+                        setPages((pages) => pages + 1);
+                    } else {
+                        setHasMore(false);
+                    }
+                }
+            });
+        
+            if (node) observer.current.observe(node);
+        },
+        [isLoading, hasMore]
+    );
+
+    const toggleFullScreen = () => {
+        if(screenfull.isEnabled){
+            screenfull.toggle();
+        }
+    }
+    return(
+        <>
+            <div>
+                {/* {menu &&
+                    <div className="w-1/6 transition duration-500 ease-out-in transform bg-gray-700 dark:bg-white">
+                        side menu
+                    </div>
+                } */}
+                <div className="w-full">
+                    <div className="bg-white min-h-14 dark:bg-gray-800 space-x-10 grid grid-cols-3 items-center sticky top-0">
+                        <div className="px-12 text-black dark:text-white flex">
+                            <ChevronLeftIcon className="w-5 h-5 dark:text-white text-black mt-1"/>
+                            <span className="mt-0.5">back to home</span>
+                        </div>
+                        <div className="text-black dark:text-white px-12 text-center">
+                           {title}
+                        </div>
+                        <div className="flex flex-nowrap ml-64 space-x-10 absolute right-20">
+                            {/* <SearchIcon className="w-3.5 mt-1 h-full text-black dark:text-white cursor-pointer" onClick={()=>setSearch(!search)}/> */}
+                            <button onClick={() => setZoomIn(!zoomIn)}><ZoomInIcon className="w-5 h-full text-black dark:text-white"/></button>
+                            <button onClick={() => setZoomOut(!zoomOut)}><ZoomOutIcon className="w-5 h-full text-black dark:text-white"/></button>
+                            <ArrowsExpandIcon className="w-5 h-full text-black dark:text-white cursor-pointer" onClick={()=>toggleFullScreen()}/>
+                            <CogIcon className="w-5 h-full text-black dark:text-white cursor-pointer" onClick={()=>setLayout(!layout)}/>
+                            {/* <MenuIcon className="w-5 h-full ml-8 text-black dark:text-white cursor-pointer" onClick={()=>setMenu(!menu)}/> */}
+                            {/* {search &&
+                                <div className="origin-top-right absolute right-32 mt-10 transition duration-150 ease-out w-56 rounded-md shadow-lg py-3 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                                    <input typ="search" className="focus:outline-none py-2 ml-4 px-4 w-5/6 rounded-md"/>
+                                </div>
+                            } */}
+                        </div>
+                    </div>
+                    {/* <div>
+                        <button className="p-2" onClick={()=>setTheme(colorTheme)}>click darkMode</button>
+                        <button className="p-2" onClick={()=>toggleFullScreen()}>click</button>
+                    </div> */}
+                        <div className={!layout ? "flex flex-col space-x-4 w-full mx-auto" : "grid grid-cols-2 gap-2 w-full mx-auto"} style={{minHeight:'750px'}}>
+                            {items.map((item, index) => 
+                                index + 1 === items.length ? (
+                                    <Item reference={lastItemRef} key={index} >
+                                        <div 
+                                            className={
+                                                (zoomIn &&"w-full h-full md:w-4/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
+                                                (zoomOut && "w-full h-full md:w-2/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
+                                                "w-full h-full md:w-3/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex"
+                                            }
+                                        >
+                                            <img src={item} alt={index} className="w-full h-full mx-auto" onDragStart={(e)=>preventDrag(e)}/>
+                                        </div>
+                                    </Item>
+                                ):(
+                                    <Item reference={lastItemRef} key={index}>
+                                        <div 
+                                            className={
+                                                (zoomIn &&"w-full h-full md:w-4/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
+                                                (zoomOut && "w-full h-full md:w-2/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
+                                                "w-full h-full md:w-3/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex"
+                                            }
+                                        >
+                                            <img src={item} alt={index} className="w-full h-full mx-auto" onDragStart={(e)=>preventDrag(e)}/>
+                                        </div>
+                                    </Item>
+                                )
+                            )}
+                        </div>
+                    <div>
+                        {isLoading && <Loader />}
+                    </div>
+                    <div className="absolute bottom-0 top-4 sticky z-10 h-14 text-center dark:bg-gray-800 bg-white w-full py-2">
+                        <span className="dark:text-white text-black py-2">
+                            {pageNumber}/ {TOTAL_PAGES}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default Reader;
