@@ -2,17 +2,12 @@ import image from "../assets/Aset_halaman_Login.png";
 import logo from "../assets/logo.png";
 import { React, useState } from "react";
 import axios from "axios";
-import {RefreshIcon} from '@heroicons/react/outline'
-import { useHistory } from "react-router-dom";
-import { func } from "prop-types";
-import Cookies from 'js-cookie';
+import { RefreshIcon } from "@heroicons/react/outline";
+import Cookies from "js-cookie";
 const sha1 = require("js-sha1");
 
+require("dotenv").config();
 
-function Dashboard() {
-  let history = useHistory();
-  history.push("/dashboard");
-}
 const LoginForm = () => {
   let FormLogin = {
     username: null,
@@ -20,7 +15,7 @@ const LoginForm = () => {
   };
 
   const [state, setState] = useState(FormLogin);
-  const [loading, setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   // const secretPassword = process.env.SALT_SECRET;
   const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
 
@@ -32,6 +27,7 @@ const LoginForm = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log(process.env.REACT_APP_BASE_URL);
     event.preventDefault();
     setLoading(true);
     let encPassword = HashPassword(state.password);
@@ -42,21 +38,19 @@ const LoginForm = () => {
     };
 
     axios
-      .post(
-        "https://dev.apps-foundry.com/scoopcor/api/v1/auth/login",
-        data
-      )
+      .post(process.env.REACT_APP_BASE_URL + "auth/login", data)
       .then((res) => {
         setState(FormLogin);
         // localStorage.setItem("token", res.data.realm + " " + res.data.token);
         // localStorage.setItem("username", res.data.first_name);
-        Cookies.set("token", res.data.realm + " " + res.data.token)
+        Cookies.set("token", res.data.realm + " " + res.data.token);
         Cookies.set("username", res.data.first_name);
-        setLoading(false)
+        setLoading(false);
         window.location.href = "/dashboard";
       })
       .catch((err) => {
         console.log(err);
+        alert(JSON.stringify(err));
       });
   };
 
@@ -104,16 +98,27 @@ const LoginForm = () => {
             </div>
             <div className="text-center">
               <button
-                className={state.username && state.password ? "bg-blue-500 px-20 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto" : "bg-gray-100 px-20 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold"}
+                className={
+                  state.username && state.password
+                    ? "bg-blue-500 px-20 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto"
+                    : "bg-gray-100 px-20 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold"
+                }
                 onClick={handleSubmit}
               >
-                <RefreshIcon className={loading ? "animate-spin w-5 h-5 text-white" : "hidden"}/>
+                <RefreshIcon
+                  className={
+                    loading ? "animate-spin w-5 h-5 text-white" : "hidden"
+                  }
+                />
                 Masuk
               </button>
             </div>
             <div className="text-center text-sm ">
               baru di Gramedia Digital?
-              <a href="https://ebooks.gramedia.com/id/register" className="text-blue-600 font-bold">
+              <a
+                href="https://ebooks.gramedia.com/id/register"
+                className="text-blue-600 font-bold"
+              >
                 Daftar
               </a>
             </div>
