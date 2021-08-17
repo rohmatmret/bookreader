@@ -3,6 +3,7 @@ import {MenuIcon, ArrowsExpandIcon, SearchIcon, CogIcon, ChevronLeftIcon, ZoomIn
 import useDarkMode from '../SetThemes.js';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+import {Link } from 'react-router-dom'
 const screenfull = require('screenfull');
 
 
@@ -23,13 +24,10 @@ const Reader = (params) => {
     const title = useSelector(state => state.title)
     const TOTAL_PAGES = totalPage;
     const [pageNumber, setPageNumber] = useState(1);
-    console.log(title)
-    
 
-
-    const Item = ({ children, reference }) => {
+    const Item = ({ children, reference, ids }) => {
         return (
-            <div ref={reference}>
+            <div ref={reference} id={ids}>
                 {children}
             </div>
         );
@@ -48,9 +46,7 @@ const Reader = (params) => {
 
     const fetchData = async (index) => {
         setIsLoading(true);
-        console.log(index, 'index');
         var slug = params.params
-        console.log(slug)
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         await axios.get(`https://dev.apps-foundry.com/scoopcor/api/v1/items/${Number(slug)}/web-reader/${index}.jpg`,
@@ -97,10 +93,6 @@ const Reader = (params) => {
              lastScrollTop = st <= 0 ? 0 : st;
         },false);
 
-        // var body = document.body,html = document.documentElement;
-        // var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
-        // console.log(body, height)
-
         // disable print screen
         document.addEventListener('keyup', (e) => {
             if (e.key == 'PrintScreen') {
@@ -114,7 +106,6 @@ const Reader = (params) => {
             screenfull.on('change');
         }
         if(pages <= TOTAL_PAGES){
-            console.log(pages)
             fetchData(pages);
             // getItems(pages);
             setPages((pages) => pages + 1);
@@ -148,6 +139,18 @@ const Reader = (params) => {
             screenfull.toggle();
         }
     }
+
+    const changeValue = (e) => {
+        setPageNumber(e)
+        if(e != null || e != ""){
+            var pageId = document.getElementById(e)
+            if(pageId){
+                pageId.scrollIntoView();
+            }
+        }else{
+            return false
+        }
+    }
     return(
         <>
             <div>
@@ -160,7 +163,7 @@ const Reader = (params) => {
                     <div className="bg-white min-h-14 dark:bg-gray-800 space-x-10 grid grid-cols-3 items-center sticky top-0">
                         <div className="px-12 text-black dark:text-white flex">
                             <ChevronLeftIcon className="w-5 h-5 dark:text-white text-black mt-1"/>
-                            <span className="mt-0.5">back to home</span>
+                            <span className="mt-0.5"><Link to="/">back to home</Link></span>
                         </div>
                         <div className="text-black dark:text-white px-12 text-center">
                            {title}
@@ -186,7 +189,7 @@ const Reader = (params) => {
                         <div className={!layout ? "flex flex-col space-x-4 w-full mx-auto" : "grid grid-cols-2 gap-2 w-full mx-auto"} style={{minHeight:'750px'}}>
                             {items.map((item, index) => 
                                 index + 1 === items.length ? (
-                                    <Item reference={lastItemRef} key={index} >
+                                    <Item reference={lastItemRef} key={index} ids={index}>
                                         <div 
                                             className={
                                                 (zoomIn &&"w-full h-full md:w-4/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
@@ -198,7 +201,7 @@ const Reader = (params) => {
                                         </div>
                                     </Item>
                                 ):(
-                                    <Item reference={lastItemRef} key={index}>
+                                    <Item reference={lastItemRef} key={index} ids={index}>
                                         <div 
                                             className={
                                                 (zoomIn &&"w-full h-full md:w-4/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
@@ -216,9 +219,10 @@ const Reader = (params) => {
                         {isLoading && <Loader />}
                     </div>
                     <div className="absolute bottom-0 top-4 sticky z-10 h-14 text-center dark:bg-gray-800 bg-white w-full py-2">
-                        <span className="dark:text-white text-black py-2">
-                            {pageNumber}/ {TOTAL_PAGES}
-                        </span>
+                        <div className="dark:text-white text-black py-2 flex justify-center spcae-x-2 w-auto">
+                            <input type="text" className="focus:outline-none w-12 px-2 text-center text-black rounded-md mx-2" value={pageNumber} onChange={(e)=> changeValue(e.target.value)}/>
+                            <span>/ {TOTAL_PAGES}</span>
+                        </div>
                     </div>
                 </div>
             </div>

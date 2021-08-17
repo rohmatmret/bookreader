@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import { setPageCount, setTitle } from "../rootSlice";
 
-const CardItem = ({ image, title, author, url, pageCount }) => {
+const CardItem = ({ image, title, author,offerId, url, pageCount }) => {
   const dispatch = useDispatch();
   // const basePageCount = useSelector(state => state.pageCount);
 
@@ -34,7 +34,7 @@ const CardItem = ({ image, title, author, url, pageCount }) => {
         />
         <button className="text-white font-bold text-left" onClick={(e)=>{handleStorePageCount()}}>
         <Link
-            to={"/reader/" + author}
+            to={"/reader/" + offerId}
           >
             Baca
           </Link>

@@ -70,7 +70,8 @@ export default function PremiumOffers() {
                       <CardItem
                         image={books.images}
                         title={books.name}
-                        author={books.id}
+                        author={books.author}
+                        offerId={books.id}
                         url={books.images}
                         key={books.id}
                         pageCount={books.page_count}

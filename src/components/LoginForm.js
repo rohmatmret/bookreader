@@ -57,7 +57,7 @@ const LoginForm = () => {
   return (
     <div className="lg:grid lg:grid-cols-2 lg:gap-10">
       <div className="hidden lg:block">
-        <img src={image} alt="login_image" className="bg-cover bg-center" />
+        <img src={image} alt="login_image" className="bg-cover bg-center mx-auto" />
       </div>
       <div className="flex flex-row">
         <div className="w-full mt-14 lg:mt-24">
