@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import ViewBooks from "./components/reader";
+import CustomReader from './components/CustomReader';
 
 function Reader() {
   const [slug, setSlug] = useState("");
@@ -17,8 +18,9 @@ function Reader() {
   })
 
   return (
-    <div className="App">
-      <ViewBooks params={slug}/>
+    <div  className="bg-white dark:bg-gray-700">
+      {/* <ViewBooks params={slug}/> */}
+      <CustomReader params={params.itemid}/>
     </div>
   );
 }

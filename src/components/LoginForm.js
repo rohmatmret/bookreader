@@ -26,6 +26,28 @@ const LoginForm = () => {
     return encPassword;
   };
 
+  const ownedBuffet = () => {
+    axios.get(process.env.REACT_APP_BASE_URL + "owned_buffets",{
+      headers: {Authorization:Cookies.get('token')}
+    })
+    .then((res)=>{
+      // console.log(res)
+      var data =  res.data.owned_buffets;
+      var offerId;
+      data.map((item, index)=>{
+        offerId = item.offerbuffet.offer.id
+        return offerId
+      })
+      Cookies.set('offerId', offerId);
+      setLoading(false);
+      window.location.href = "/dashboard";
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(JSON.stringify(err));
+    });
+  }
+
   const handleSubmit = (event) => {
     console.log(process.env.REACT_APP_BASE_URL);
     event.preventDefault();
@@ -45,8 +67,7 @@ const LoginForm = () => {
         // localStorage.setItem("username", res.data.first_name);
         Cookies.set("token", res.data.realm + " " + res.data.token);
         Cookies.set("username", res.data.first_name);
-        setLoading(false);
-        window.location.href = "/dashboard";
+        ownedBuffet();
       })
       .catch((err) => {
         console.log(err);
@@ -57,7 +78,7 @@ const LoginForm = () => {
   return (
     <div className="lg:grid lg:grid-cols-2 lg:gap-10">
       <div className="hidden lg:block">
-        <img src={image} alt="login_image" className="bg-cover bg-center" />
+        <img src={image} alt="login_image" className="bg-cover bg-center mx-auto" />
       </div>
       <div className="flex flex-row">
         <div className="w-full mt-14 lg:mt-24">

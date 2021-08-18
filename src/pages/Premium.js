@@ -37,11 +37,16 @@ export default function PremiumOffers() {
     let Result = await axios.get(
       `${process.env.REACT_APP_BASE_URL}offers/items?offer_id=${id}&item_type=2`,
       { headers: { Authorization: Cookies.get("token") } }
-    );
+    ).catch(err => {
+      if(err){
+        window.location.href = "/"
+      }
+    });
 
     if (Result) {
-      setItems(Result.data);
-      setLoading(false);
+        console.log(Result, 'res')
+        setItems(Result.data);
+        setLoading(false);
     }
   };
 
@@ -70,10 +75,12 @@ export default function PremiumOffers() {
                       <CardItem
                         image={books.images}
                         title={books.name}
-                        author={books.id}
+                        author={books.author}
+                        offerId={books.id}
                         url={books.images}
                         key={books.id}
                         pageCount={books.page_count}
+                        params={params.offerid}
                       />
                     );
                   })

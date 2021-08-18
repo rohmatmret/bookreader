@@ -6,10 +6,14 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import LoginForm from "./components/LoginForm";
 import Reader from "./Reader";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, render } from "react-router-dom";
 import Premium from "./pages/Premium";
 import { Provider } from "react-redux";
 import {store} from './store';
+import Cookies from 'js-cookie';
+import NotFound from './notfound';
+
+const isAuthenticated = Cookies.get('token')
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,10 +21,10 @@ ReactDOM.render(
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact component={LoginForm} />
-          <Route path={["/premium/:offerid"]} exac component={Premium} />
-          <Route path={["/reader/:itemid"]} exact component={Reader}></Route>
-          <Route path="/" component={App} />
-          {/* <Redirect from="*" to="/" /> */}
+          <Route path={["/premium/:offerid"]} exact render={()=>isAuthenticated ? <Premium />: <Redirect to="/login"/>}/>
+          <Route path={["/reader/:itemid"]} exact render={()=>isAuthenticated ? <Reader />: <Redirect to="/login"/>}/>
+          <Route path={["/","/dashboard"]} exact render={()=>isAuthenticated ? <App />: <Redirect to="/login"/>}/>
+          <Route component={NotFound}/>
         </Switch>
       </BrowserRouter>
     </Provider>

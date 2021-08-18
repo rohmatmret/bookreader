@@ -1,7 +1,18 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
+import {UserCircleIcon} from '@heroicons/react/outline';
+import { useHistory } from "react-router-dom";
 
-const UserDropdown = (props) => {
+const UserDropdown = () => {
   const [menu, setMenu] = useState(false);
+  const username = Cookies.get('username') != null ? Cookies.get('username') : '';
+
+  const handleLogout = () => {
+    Cookies.remove('username');
+    Cookies.remove('token');
+    Cookies.remove('offerId');
+    window.location.href = '/login';
+  }
 
   return (
     <>
@@ -10,7 +21,7 @@ const UserDropdown = (props) => {
           <div>
             <button
               type="button"
-              className="float-right max-w-xs rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white text-white space-x-4"
+              className="float-right max-w-xs rounded-full flex items-center text-sm focus:outline-none text-white space-x-4"
               id="user-menu-button"
               aria-expanded="false"
               aria-haspopup="true"
@@ -18,12 +29,13 @@ const UserDropdown = (props) => {
                 setMenu(!menu);
               }}
             >
-              <span className="text-lg font-normal">Username</span>
-              <img
+              <span className="text-lg font-normal">{username}</span>
+              {/* <img
                 className="h-8 w-8 rounded-full"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt=""
-              />
+              /> */}
+              <UserCircleIcon className="w-10 h-10 "/>
             </button>
           </div>
           {menu && (
@@ -33,20 +45,9 @@ const UserDropdown = (props) => {
               aria-orientation="vertical"
               aria-labelledby="user-menu-button"
             >
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-700"
-              >
-                Your Profile
-              </a>
-
-              <a href="#" className="block px-4 py-2 text-sm text-gray-700">
-                Settings
-              </a>
-
-              <a href="#" className="block px-4 py-2 text-sm text-gray-700">
+              <button className="block px-4 py-2 text-sm text-gray-700" onClick={()=>handleLogout()}>
                 Sign out
-              </a>
+              </button>
             </div>
           )}
         </div>
