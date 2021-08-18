@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {MenuIcon, ArrowsExpandIcon, SearchIcon, CogIcon, ChevronLeftIcon, ZoomInIcon, ZoomOutIcon} from '@heroicons/react/outline';
+import {MenuIcon, ArrowsExpandIcon, SearchIcon, CogIcon, ChevronLeftIcon, ZoomInIcon, ZoomOutIcon, ArrowRightIcon, ArrowLeftIcon} from '@heroicons/react/outline';
 import useDarkMode from '../SetThemes.js';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
@@ -166,7 +166,7 @@ const Reader = (params) => {
                     {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
                 <div className="w-full">
                     <div className="bg-white min-h-14 dark:bg-gray-800 space-x-10 grid grid-cols-3 items-center sticky top-0 z-50">
-                        <div className="px-12 text-black dark:text-white flex" onClick={() => toggleFullScreen()}>
+                        <div className="px-12 text-black dark:text-white flex">
                             <ChevronLeftIcon className="w-5 h-5 dark:text-white text-black mt-1"/>
                             <span className="mt-0.5"><Link to="/">back to home</Link></span>
                         </div>
