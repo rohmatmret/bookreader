@@ -2,10 +2,10 @@
  * BookReaderTemplate to load BookNavigator components
  */
 
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from "lit-element";
 
-import '../ItemNavigator/ItemNavigator.js';
-import '../BookNavigator/BookNavigator.js';
+import "../ItemNavigator/ItemNavigator.js";
+import "../BookNavigator/BookNavigator.js";
 
 export class BookReader extends LitElement {
   static get properties() {
@@ -17,8 +17,8 @@ export class BookReader extends LitElement {
 
   constructor() {
     super();
-    this.base64Json = '';
-    this.baseHost = 'https://archive.org';
+    this.base64Json = "";
+    this.baseHost = "https://archive.org";
   }
 
   firstUpdated() {
@@ -31,7 +31,7 @@ export class BookReader extends LitElement {
    * set base64 data to props
    */
   async fetchData() {
-    const ocaid = new URLSearchParams(location.search).get('ocaid');
+    const ocaid = new URLSearchParams(location.search).get("ocaid");
     const response = await fetch(`${this.baseHost}/metadata/${ocaid}`);
     const bookMetadata = await response.json();
     const jsonBtoa = btoa(JSON.stringify(bookMetadata));
@@ -52,7 +52,8 @@ export class BookReader extends LitElement {
         <item-navigator
           itemType="bookreader"
           basehost=${this.baseHost}
-          item=${this.base64Json}>
+          item=${this.base64Json}
+        >
           <div slot="bookreader">
             <slot name="bookreader"></slot>
           </div>

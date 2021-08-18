@@ -76,7 +76,7 @@ const SideMenu = () => {
               {Premium
                 ? Premium.map((p) => {
                     return (
-                      <li className="items-center">
+                      <li className="items-center" key={p.id}>
                         <Link
                           className={
                             "text-xs uppercase py-3 font-bold block " +

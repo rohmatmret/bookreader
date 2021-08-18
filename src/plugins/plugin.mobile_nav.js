@@ -3,37 +3,38 @@
  * Adds mobile navigation at responsive breakpoint
  */
 
-import * as utils from '../BookReader/utils.js';
-import 'jquery.mmenu/dist/js/jquery.mmenu.min.js';
-import 'jquery.mmenu/dist/addons/navbars/jquery.mmenu.navbars.min.js';
-
+import * as utils from "../BookReader/utils.js";
+import "jquery.mmenu/dist/js/jquery.mmenu.min.js";
+import "jquery.mmenu/dist/addons/navbars/jquery.mmenu.navbars.min.js";
+import jQuery from "jquery";
+import $ from "jquery";
 //contains all filters and labels for checkboxs
 const FILTERLIST = [
   {
     filter: "grayscale(100%)",
-    label: "Grayscale"
+    label: "Grayscale",
   },
   {
     filter: "brightness(120%)",
-    label: "High brightness"
+    label: "High brightness",
   },
   {
     filter: "invert(100%)",
-    label: "Inverted (dark mode)"
+    label: "Inverted (dark mode)",
   },
   {
     filter: "contrast(120%)",
-    label: "High contrast"
+    label: "High contrast",
   },
 ];
 
 jQuery.extend(BookReader.defaultOptions, {
   enableMobileNav: true,
-  mobileNavTitle: 'Internet Archive',
+  mobileNavTitle: "Internet Archive",
   mobileNavFullscreenOnly: false,
 });
 
-BookReader.prototype.setup = (function(super_) {
+BookReader.prototype.setup = (function (super_) {
   return function (options) {
     super_.call(this, options);
 
@@ -45,7 +46,6 @@ BookReader.prototype.setup = (function(super_) {
   };
 })(BookReader.prototype.setup);
 
-
 // Extend initToolbar
 BookReader.prototype.initToolbar = (function (super_) {
   return function (mode, ui) {
@@ -55,30 +55,31 @@ BookReader.prototype.initToolbar = (function (super_) {
       this.refs.$br.append($drawerEl);
 
       // Render info into mobile info before mmenu
-      this.buildInfoDiv(this.$('.BRmobileInfo'));
-      this.buildShareDiv(this.$('.BRmobileShare'));
+      this.buildInfoDiv(this.$(".BRmobileInfo"));
+      this.buildShareDiv(this.$(".BRmobileShare"));
 
       $mmenuEl = $drawerEl;
-      $mmenuEl.mmenu({
-        navbars: [
-          { "position": "top" },
-        ],
-        navbar: {
-          add: true,
-          title: this.mobileNavTitle,
-          titleLink: 'panel'
+      $mmenuEl.mmenu(
+        {
+          navbars: [{ position: "top" }],
+          navbar: {
+            add: true,
+            title: this.mobileNavTitle,
+            titleLink: "panel",
+          },
+          extensions: ["panelshadow"],
         },
-        extensions: [ "panelshadow" ],
-      }, {
-        offCanvas: {
-          wrapPageIfNeeded: false,
-          zposition: 'next',
-          pageSelector: this.el,
+        {
+          offCanvas: {
+            wrapPageIfNeeded: false,
+            zposition: "next",
+            pageSelector: this.el,
+          },
         }
-      });
+      );
 
-      const $BRpageviewField = $mmenuEl.find('.BRpageviewValue');
-      $mmenuEl.data('mmenu').bind('opened', () => {
+      const $BRpageviewField = $mmenuEl.find(".BRpageviewValue");
+      $mmenuEl.data("mmenu").bind("opened", () => {
         // Update "Link to this page view" link
         if ($BRpageviewField.length) {
           $BRpageviewField.val(window.location.href);
@@ -86,58 +87,60 @@ BookReader.prototype.initToolbar = (function (super_) {
       });
 
       //apply filters when checkboxs clicked
-      $drawerEl.find('.BRcheckbox-filters').click(() => applyFilters($drawerEl, this));
+      $drawerEl
+        .find(".BRcheckbox-filters")
+        .click(() => applyFilters($drawerEl, this));
 
       // Bind mobile switch buttons
-      $drawerEl.find('.DrawerLayoutButton.one_page_mode').click(
-        () => this.switchMode(this.constMode1up));
-      $drawerEl.find('.DrawerLayoutButton.two_page_mode').click(
-        () => this.switchMode(this.constMode2up));
-      $drawerEl.find('.DrawerLayoutButton.thumbnail_mode').click(
-        () => this.switchMode(this.constModeThumb));
+      $drawerEl
+        .find(".DrawerLayoutButton.one_page_mode")
+        .click(() => this.switchMode(this.constMode1up));
+      $drawerEl
+        .find(".DrawerLayoutButton.two_page_mode")
+        .click(() => this.switchMode(this.constMode2up));
+      $drawerEl
+        .find(".DrawerLayoutButton.thumbnail_mode")
+        .click(() => this.switchMode(this.constModeThumb));
 
       if (this.mobileNavFullscreenOnly) {
-        $(document.body).addClass('BRbodyMobileNavEnabledFullscreen');
+        $(document.body).addClass("BRbodyMobileNavEnabledFullscreen");
       } else {
-        $(document.body).addClass('BRbodyMobileNavEnabled');
+        $(document.body).addClass("BRbodyMobileNavEnabled");
       }
 
       this.refs.$mmenu = $mmenuEl;
-
     }
 
     // Call the parent method at the end, because it binds events to DOM
     super_.apply(this, arguments);
 
-
     if (this.enableMobileNav) {
       // Need to bind more, console after toolbar is initialized
-      this.$('.BRmobileHamburger').click(() => {
-        if ($mmenuEl.data('mmenu').getInstance().vars.opened) {
-          $mmenuEl.data('mmenu').close();
+      this.$(".BRmobileHamburger").click(() => {
+        if ($mmenuEl.data("mmenu").getInstance().vars.opened) {
+          $mmenuEl.data("mmenu").close();
         } else {
-          $mmenuEl.data('mmenu').open();
+          $mmenuEl.data("mmenu").open();
           this.trigger("mobileNavOpen");
         }
       });
 
-
       const closeMobileMenu = (e) => {
         // Need to close the mobile menu to reset DOM & Style
         // driven by menu plugin
-        const width = $( window ).width();
-        const mobileMenuIsOpen = $mmenuEl.data('mmenu').getInstance().vars.opened;
+        const width = $(window).width();
+        const mobileMenuIsOpen = $mmenuEl.data("mmenu").getInstance()
+          .vars.opened;
         // $brBreakPointMobile: 800px;
-        if (mobileMenuIsOpen && (width >= 800)) {
-          $mmenuEl.data('mmenu').close ();
+        if (mobileMenuIsOpen && width >= 800) {
+          $mmenuEl.data("mmenu").close();
         }
       };
 
-      window.addEventListener('resize', utils.debounce(closeMobileMenu, 900));
+      window.addEventListener("resize", utils.debounce(closeMobileMenu, 900));
     }
   };
 })(BookReader.prototype.initToolbar);
-
 
 BookReader.prototype.buildToolbarElement = (function (super_) {
   return function () {
@@ -150,9 +153,7 @@ BookReader.prototype.buildToolbarElement = (function (super_) {
           <span class="BRtoolbarMobileTitle" title="${escapedTitle}">${escapedTitle}</span>
         </span>
       `;
-      $el
-        .addClass('responsive')
-        .prepend($(toolbar));
+      $el.addClass("responsive").prepend($(toolbar));
     }
     return $el;
   };
@@ -163,15 +164,15 @@ BookReader.prototype.buildToolbarElement = (function (super_) {
  * extend the default drawer.
  * @return {jqueryElement}
  */
-BookReader.prototype.buildMobileDrawerElement = function() {
-  let experimentalHtml = '';
+BookReader.prototype.buildMobileDrawerElement = function () {
+  let experimentalHtml = "";
   //builds filters checkbox html
   if (this.enableExperimentalControls) {
     experimentalHtml = `
         <p class="DrawerSettingsTitle">Visual Adjustment</p>
         <div class="BRcheckbox-group-filters">
         `;
-    FILTERLIST.forEach( (el, i) => {
+    FILTERLIST.forEach((el, i) => {
       const checkboxHtml = `
           <input type="checkbox" class="BRcheckbox-filters" id="filter${i}">
           <label for="filter${i}" class="BRcheckbox-label-filters">${el.label}</label><br>
@@ -181,7 +182,6 @@ BookReader.prototype.buildMobileDrawerElement = function() {
     });
     experimentalHtml = experimentalHtml.concat("</div>");
   }
-
 
   const settingsSection = `
     <span>
@@ -193,7 +193,9 @@ BookReader.prototype.buildMobileDrawerElement = function() {
     <div class=DrawerSettingsWrapper>
         <div class="DrawerSettingsLayoutWrapper">
           <button class="DrawerLayoutButton one_page_mode">
-            <img src="${this.imagesBaseURL}icon_one_page.svg" alt="Single Page"/>
+            <img src="${
+              this.imagesBaseURL
+            }icon_one_page.svg" alt="Single Page"/>
             <br>
             One Page
           </button>
@@ -203,7 +205,9 @@ BookReader.prototype.buildMobileDrawerElement = function() {
             Two Pages
           </button>
           <button class="DrawerLayoutButton thumbnail_mode">
-            <img src="${this.imagesBaseURL}icon_thumbnails.svg" alt="Thumbnails"/>
+            <img src="${
+              this.imagesBaseURL
+            }icon_thumbnails.svg" alt="Thumbnails"/>
             <br>
             Thumbnails
           </button>
@@ -263,22 +267,20 @@ BookReader.prototype.$ = (function (super_) {
 })(BookReader.prototype.$);
 
 /**
-* Dynamically creates styles combining different filters for BookReaders imgs
-* based on filters checkbox
-*/
+ * Dynamically creates styles combining different filters for BookReaders imgs
+ * based on filters checkbox
+ */
 const applyFilters = (drawerEl, br) => {
   let filterStr = "";
 
-  $('.BRcheckbox-filters').each(
-    (i, el) => {
-      br.refs.$br.removeClass("filter-applied");
-      if ($(el).is(':checked')) {
-        br.refs.$br.addClass($(el).attr("filter-applied"));
-        filterStr = filterStr + FILTERLIST[i].filter;
-      }
+  $(".BRcheckbox-filters").each((i, el) => {
+    br.refs.$br.removeClass("filter-applied");
+    if ($(el).is(":checked")) {
+      br.refs.$br.addClass($(el).attr("filter-applied"));
+      filterStr = filterStr + FILTERLIST[i].filter;
     }
-  );
-  const filtersSheet = $("#filtersStyle")[0] || document.createElement('style');
+  });
+  const filtersSheet = $("#filtersStyle")[0] || document.createElement("style");
   filtersSheet.id = "filtersStyle";
   filtersSheet.innerHTML = `.BRpagecontainer  img {
             filter: ${filterStr};

@@ -4,19 +4,48 @@
 // Copyright(c)2008-2009 Internet Archive. Software license AGPL version 3.
 
 // Create the BookReader object
+import axios from "axios";
 import BookReader from "../BookReader";
-import '../BookReader.css';
-import '../BookReaderDemo.css';
+import "../BookReader.css";
+import "../BookReaderDemo.css";
+let ready = false;
+const GetImages = async (itemid, index, token) => {
+  let baseUrl = `${process.env.REACT_APP_BASE_URL}`;
+  let getImage = [];
+  await axios
+    .get(`${baseUrl}items/${itemid}/web-reader/${index}.jpg`, {
+      headers: { Authorization: token },
+      responseType: "blob",
+    })
+    .then((response) => {
+      let blob = window.URL.createObjectURL(response.data);
+      getImage.push({
+        uri: blob,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
-
-export default function ReaderLoad(selector,extraOptions, pageCount, token) {
+  const results = await Promise.all(getImage).then((results) => {
+    return results;
+  });
+  return results;
+};
+const ReaderLoad = async (selector, itemId, pageCount, token) => {
   selector = selector || "BookReader1";
-  extraOptions = Number(extraOptions.params) 
+
+  const first = await GetImages(itemId, pageCount, token);
 
   var options = {
+    data: [first],
+    //enableChaptersPlugin: true,
     // Total number of leafs
+    thumbMaxLoading: function () {
+      return 1000;
+    },
     getNumLeafs: function () {
-      return pageCount;
+      return parseInt(pageCount);
     },
 
     // Return the width of a given page.  Here we assume all images are 800 pixels wide
@@ -28,19 +57,6 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
     getPageHeight: function (index) {
       return 1200;
     },
-
-    // We load the images from archive.org -- you can modify this function to retrieve images
-    // using a different URL structure
-    getPageURI: function (index, reduce, rotate) {
-      // reduce and rotate are ignored in this simple implementation, but we
-      // could e.g. look at reduce and load images from a different directory
-      // or pass the information to an image server
-      if(extraOptions !== 0){
-        var url =`https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/web-reader/${index+1}.jpg`
-      }
-      return url;
-    },
-
     // Return which side, left or right, that a given page should be displayed on
     getPageSide: function (index) {
       if (0 == (index & 0x1)) {
@@ -49,7 +65,12 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
         return "L";
       }
     },
-
+    getNextPage: function (index) {
+      console.log("page " + index);
+    },
+    getPageNum: function (index) {
+      return index + 1;
+    },
     // This function returns the left and right indices for the user-visible
     // spread that contains the given index.  The return values may be
     // null if there is no facing page or the index is invalid.
@@ -76,25 +97,13 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
           spreadIndices[0] = pindex - 1;
         }
       }
+
       return spreadIndices;
     },
-
-    // For a given "accessible page index" return the page number in the book.
-    //
-    // For example, index 5 might correspond to "Page 1" if there is front matter such
-    // as a title page and table of contents.
-    getPageNum: function (index) {
-      return index + 1;
-    },
-
-    // Book title and the URL used for the book title link
     bookTitle: "BookReader Advanced Demo",
     bookUrl: "../index.html",
     bookUrlText: "Back to Home",
     bookUrlTitle: "This is the book URL title",
-    // thumbnail is optional, but it is used in the info dialog
-    thumbnail: extraOptions !== 0 && `https://dev.apps-foundry.com/scoopcor/api/v1/items/${extraOptions}/web-reader/1.jpg`,
-    // Metadata is optional, but it is used in the info dialog
     metadata: [
       { label: "Title", value: "Open Library BookReader Presentation" },
       { label: "Author", value: "Gramedia" },
@@ -109,20 +118,16 @@ export default function ReaderLoad(selector,extraOptions, pageCount, token) {
     mobileNavTitle: "BookReader demo",
 
     // Override the path used to find UI images
-    // imagesBaseURL: "../BookReader/images/",
-
-    // getEmbedCode: function (frameWidth, frameHeight, viewParams) {
-    //   return "Embed code not supported in bookreader demo.";
-    // },
-
-    // Note previously the UI param was used for mobile, but it's going to be responsive
-    // embed === iframe
+    //imagesBaseURL: "/images/",
     el: selector,
     ui: "full", // embed, full (responsive)
   };
-  
-  var br = new BookReader(options);
 
-  // Let's go!
-  br.init();
-}
+  if (first.length > 0) {
+    var br;
+    br = new BookReader(options);
+    br.init();
+  }
+};
+
+export default ReaderLoad;

@@ -802,6 +802,7 @@ BookReader.prototype._createPageContainer = function (index) {
     isProtected: this.protected,
     imageCache: this.imageCache,
     loadingImage: this.imagesBaseURL + "loading.gif",
+    //loadingImage: `http://localhost:3000/images/loading.gif`,
   });
 };
 

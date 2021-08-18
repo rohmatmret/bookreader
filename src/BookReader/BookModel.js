@@ -1,13 +1,14 @@
 // @ts-check
-import { DEFAULT_OPTIONS } from './options.js';
-import { clamp } from './utils.js';
+import { DEFAULT_OPTIONS } from "./options.js";
+import { clamp } from "./utils.js";
 /** @typedef {import('./options.js').PageData} PageData */
 /** @typedef {import('../BookReader.js').default} BookReader */
 
 // URI to display when a page is not viewable.
 // TODO Render configurable html for the user instead.
 // FIXME Don't reference files on archive.org
-const UNVIEWABLE_PAGE_URI = '/bookreader/static/preview-default.png';
+//const UNVIEWABLE_PAGE_URI = '/bookreader/static/preview-default.png';
+const UNVIEWABLE_PAGE_URI = "../images/progressbar.gif";
 
 /**
  * Contains information about the Book/Document independent of the way it is
@@ -54,7 +55,7 @@ export class BookModel {
     heights.sort();
     this._medianPageSizePixels = {
       width: widths[Math.floor(widths.length / 2)],
-      height: heights[Math.floor(heights.length / 2)]
+      height: heights[Math.floor(heights.length / 2)],
     };
     return this._medianPageSizePixels;
   }
@@ -77,7 +78,7 @@ export class BookModel {
 
     this._medianPageSize = {
       width: widths[Math.floor(widths.length / 2)],
-      height: heights[Math.floor(heights.length / 2)]
+      height: heights[Math.floor(heights.length / 2)],
     };
     return this._medianPageSize;
   }
@@ -124,7 +125,7 @@ export class BookModel {
     const indices = [];
 
     // Check for special "nXX" page number
-    if (pageNum.slice(0,1) == 'n') {
+    if (pageNum.slice(0, 1) == "n") {
       try {
         const pageIntStr = pageNum.slice(1, pageNum.length);
         const pageIndex = parseInt(pageIntStr);
@@ -150,7 +151,7 @@ export class BookModel {
    * @return {string}
    */
   getPageName(index) {
-    return 'Page ' + this.getPageNum(index);
+    return "Page " + this.getPageNum(index);
   }
 
   /**
@@ -158,8 +159,7 @@ export class BookModel {
    */
   getNumLeafs() {
     // For deprecated interface support, if numLeafs is set, use that.
-    if (this.br.numLeafs !== undefined)
-      return this.br.numLeafs;
+    if (this.br.numLeafs !== undefined) return this.br.numLeafs;
     return this._getDataFlattened().length;
   }
 
@@ -168,7 +168,7 @@ export class BookModel {
    * @return {Number|undefined}
    */
   getPageWidth(index) {
-    return this.getPageProp(index, 'width');
+    return this.getPageProp(index, "width");
   }
 
   /**
@@ -176,7 +176,7 @@ export class BookModel {
    * @return {Number|undefined}
    */
   getPageHeight(index) {
-    return this.getPageProp(index, 'height');
+    return this.getPageProp(index, "height");
   }
 
   /**
@@ -187,15 +187,21 @@ export class BookModel {
    */
   // eslint-disable-next-line no-unused-vars
   getPageURI(index, reduce, rotate) {
-    return !this.getPageProp(index, 'viewable', true) ? UNVIEWABLE_PAGE_URI : this.getPageProp(index, 'uri');
+    this.getNextPage(index);
+    return !this.getPageProp(index, "viewable", true)
+      ? UNVIEWABLE_PAGE_URI
+      : this.getPageProp(index, "uri");
   }
 
+  getNextPage(index) {
+    return index;
+  }
   /**
    * @param {PageIndex} index
    * @return {'L' | 'R'}
    */
   getPageSide(index) {
-    return this.getPageProp(index, 'pageSide') || (index % 2 === 0 ? 'R' : 'L');
+    return this.getPageProp(index, "pageSide") || (index % 2 === 0 ? "R" : "L");
   }
 
   /**
@@ -203,7 +209,7 @@ export class BookModel {
    * @return {PageNumString}
    */
   getPageNum(index) {
-    const pageNum = this.getPageProp(index, 'pageNum');
+    const pageNum = this.getPageProp(index, "pageNum");
     return pageNum === undefined ? `n${index}` : pageNum;
   }
 
@@ -226,10 +232,14 @@ export class BookModel {
    * @return {[PageIndex, PageIndex]} eg [0, 1]
    */
   getSpreadIndices(pindex) {
-    if (this.br.pageProgression == 'rl') {
-      return this.getPageSide(pindex) == 'R' ? [pindex + 1, pindex] : [pindex, pindex - 1];
+    if (this.br.pageProgression == "rl") {
+      return this.getPageSide(pindex) == "R"
+        ? [pindex + 1, pindex]
+        : [pindex, pindex - 1];
     } else {
-      return this.getPageSide(pindex) == 'L' ? [pindex, pindex + 1] : [pindex - 1, pindex];
+      return this.getPageSide(pindex) == "L"
+        ? [pindex, pindex + 1]
+        : [pindex - 1, pindex];
     }
   }
 
@@ -248,8 +258,9 @@ export class BookModel {
    * @return {PageIndex}
    */
   leafNumToIndex(leafNum) {
-    const index = this._getDataFlattened()
-      .findIndex(d => d.leafNum == leafNum);
+    const index = this._getDataFlattened().findIndex(
+      (d) => d.leafNum == leafNum
+    );
     // If no match is found, fall back to the leafNum provide (leafNum == index)
     return index > -1 ? index : leafNum;
   }
@@ -297,13 +308,18 @@ export class BookModel {
    * @param {boolean} [arg0.combineConsecutiveUnviewables] Yield only first unviewable
    * of a chunk of unviewable pages instead of each page
    */
-  * pagesIterator({ start = 0, end = Infinity, combineConsecutiveUnviewables = false } = {}) {
+  *pagesIterator({
+    start = 0,
+    end = Infinity,
+    combineConsecutiveUnviewables = false,
+  } = {}) {
     start = Math.max(0, start);
     end = Math.min(end, this.getNumLeafs());
 
     for (let i = start; i < end; i++) {
       const page = this.getPage(i);
-      if (combineConsecutiveUnviewables && page.isConsecutiveUnviewable) continue;
+      if (combineConsecutiveUnviewables && page.isConsecutiveUnviewable)
+        continue;
 
       yield page;
     }
@@ -314,21 +330,24 @@ export class BookModel {
    * @return {PageData[]}
    */
   _getDataFlattened() {
-    if (this._getDataFlattenedCached && this._getDataFlattenedCached[1] === this.br.data.length)
+    if (
+      this._getDataFlattenedCached &&
+      this._getDataFlattenedCached[1] === this.br.data.length
+    )
       return this._getDataFlattenedCached[0];
 
     let prevPageSide = null;
     /** @type {number|null} */
-    let unviewablesChunkStart  = null;
+    let unviewablesChunkStart = null;
     let index = 0;
     // @ts-ignore TS doesn't know about flatMap for some reason
-    const flattened = this.br.data.flatMap(spread => {
-      return spread.map(page => {
+    const flattened = this.br.data.flatMap((spread) => {
+      return spread.map((page) => {
         if (!page.pageSide) {
           if (prevPageSide === null) {
-            page.pageSide = spread.length === 2 ? 'L' : 'R';
+            page.pageSide = spread.length === 2 ? "L" : "R";
           } else {
-            page.pageSide = prevPageSide === 'L' ? 'R' : 'L';
+            page.pageSide = prevPageSide === "L" ? "R" : "L";
           }
         }
         prevPageSide = page.pageSide;
@@ -364,7 +383,7 @@ export class BookModel {
   _getDataProp(index, prop, fallbackValue = undefined) {
     const dataf = this._getDataFlattened();
     const invalidIndex = isNaN(index) || index < 0 || index >= dataf.length;
-    if (invalidIndex || 'undefined' == typeof(dataf[index][prop]))
+    if (invalidIndex || "undefined" == typeof dataf[index][prop])
       return fallbackValue;
     return dataf[index][prop];
   }
@@ -380,7 +399,7 @@ export class PageModel {
    */
   constructor(book, index) {
     // TODO: Get default from config
-    this.ppi = book._getDataProp(index, 'ppi', book.ppi);
+    this.ppi = book._getDataProp(index, "ppi", book.ppi);
     this.book = book;
     this.index = index;
     this.width = book.getPageWidth(index);
@@ -388,17 +407,19 @@ export class PageModel {
     this.height = book.getPageHeight(index);
     this.heightInches = this.height / this.ppi;
     this.pageSide = book.getPageSide(index);
-    this.leafNum = book._getDataProp(index, 'leafNum', this.index);
+    this.leafNum = book._getDataProp(index, "leafNum", this.index);
 
     /** @type {boolean} */
-    this.isViewable = book._getDataProp(index, 'viewable', true);
+    this.isViewable = book._getDataProp(index, "viewable", true);
     /** @type {PageIndex} The first in the series of unviewable pages this is in. */
-    this.unviewablesStart = book._getDataProp(index, 'unviewablesStart') || null;
+    this.unviewablesStart =
+      book._getDataProp(index, "unviewablesStart") || null;
     /**
      * Consecutive unviewable pages are pages in an unviewable "chunk" which are not the first
      * of that chunk.
      */
-    this.isConsecutiveUnviewable = !this.isViewable && this.unviewablesStart != this.index;
+    this.isConsecutiveUnviewable =
+      !this.isViewable && this.unviewablesStart != this.index;
 
     this._rawData = this.book._getDataFlattened()[this.index];
   }
@@ -420,7 +441,10 @@ export class PageModel {
       }
     } else {
       this._rawData.viewable = false;
-      this._rawData.unviewablesStart = (this.prev && !this.prev.isViewable) ? this.prev.unviewablesStart : this.index;
+      this._rawData.unviewablesStart =
+        this.prev && !this.prev.isViewable
+          ? this.prev.unviewablesStart
+          : this.index;
       // Update any subsequent page to now point to the right "start"
       for (const page of this.book.pagesIterator({ start: this.index + 1 })) {
         if (!page.isViewable) break;
@@ -460,8 +484,8 @@ export class PageModel {
       reduces.push(r);
     }
     return reduces
-      .map(r => `${this.getURI(r, rotate)} ${initialReduce / r}x`)
-      .join(', ');
+      .map((r) => `${this.getURI(r, rotate)} ${initialReduce / r}x`)
+      .join(", ");
   }
 
   /**
@@ -492,7 +516,9 @@ export class PageModel {
         // Recursively goes backward through the book
         // TODO make a reverse iterator to make it look identical to findNext
         const prev = new PageModel(this.book, this.index - 1);
-        return prev.isViewable ? prev : prev.findPrev({ combineConsecutiveUnviewables });
+        return prev.isViewable
+          ? prev
+          : prev.findPrev({ combineConsecutiveUnviewables });
       }
     } else {
       return new PageModel(this.book, this.index - 1);

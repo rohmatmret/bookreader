@@ -116,7 +116,7 @@
   width: auto;
   height: 100%;
   margin: 0 10px;
-  background: transparent url(images/icon_home.svg) no-repeat center center;
+  background: transparent url(./images/icon_home.svg) no-repeat center center;
   background-size: contain;
 }
 
@@ -167,7 +167,7 @@
 }
 
 .BRprogressbar {
-  background-image: url("images/progressbar.gif");
+  background-image: url("./images/progressbar.gif");
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -519,7 +519,7 @@ svg.BRPageLayer {
   border-style: solid solid solid none;
   border-color: #333322;
   border-width: 1px 1px 1px 0px;
-  background: transparent url(images/back_pages.png) repeat scroll 0% 0%;
+  background: transparent url(./images/back_pages.png) repeat scroll 0% 0%;
   position: absolute;
   cursor: pointer;
 }
@@ -528,7 +528,7 @@ svg.BRPageLayer {
   /* border-style: solid none solid solid;
   border-color: rgb(51, 51, 34);
   border-width: 1px 0px 1px 1px; */
-  background: transparent url(images/back_pages.png) repeat scroll 0% 0%;
+  background: transparent url(./images/back_pages.png) repeat scroll 0% 0%;
   /* XXXmang replace file */
   position: absolute;
   cursor: pointer;
@@ -538,7 +538,7 @@ svg.BRPageLayer {
   /* border-style: solid none solid solid;
   border-color: rgb(51, 51, 34);
   border-width: 1px 0px 1px 1px; */
-  background: transparent url(images/back_pages.png) repeat scroll 0% 0%;
+  background: transparent url(./images/back_pages.png) repeat scroll 0% 0%;
   /* XXXmang replace file */
   position: absolute;
 }
@@ -546,7 +546,7 @@ svg.BRPageLayer {
 .BRgutter {
   /* border: 1px solid rgb(68, 25, 17); */
   position: absolute;
-  background: transparent url(images/booksplit.png) repeat scroll 0% 0%;
+  background: transparent url(./images/booksplit.png) repeat scroll 0% 0%;
 }
 
 .BRtwoPagePopUp {
@@ -580,7 +580,7 @@ svg.BRPageLayer {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  background-image: url(images/BRicons.svg);
+  background-image: url(./images/BRicons.svg);
   background-repeat: no-repeat;
 }
 
@@ -753,7 +753,7 @@ i.BRicon {
   height: 32px;
   border: none;
   background-color: transparent;
-  background-image: url("images/icon_close-pop.png");
+  background-image: url("./images/icon_close-pop.png");
   background-position: 0 0;
   background-repeat: no-repeat;
 }
@@ -846,7 +846,7 @@ i.BRicon {
 }
 
 .BRfloatMeta p.moreInfo span {
-  background: url("images/icon_OL-logo-xs.png") no-repeat;
+  background: url("./images/icon_OL-logo-xs.png") no-repeat;
   display: block;
   float: left;
   width: 26px;
@@ -879,7 +879,7 @@ i.BRicon {
 }
 
 .BRfloatFoot a.problem, a.problem-icon {
-  background: url("images/icon_alert-xs.png") no-repeat;
+  background: url("./images/icon_alert-xs.png") no-repeat;
   padding-left: 20px;
 }
 
@@ -1231,7 +1231,7 @@ i.BRicon {
   width: 25px;
   height: 25px;
   margin: 0 10px;
-  background: transparent url(images/icon_home.svg) no-repeat center center;
+  background: transparent url(./images/icon_home.svg) no-repeat center center;
   background-size: contain;
 }
 .BRnav a {
@@ -1379,7 +1379,7 @@ i.BRicon {
 }
 
 .BRup {
-  background-image: url("images/nav_control-up.png");
+  background-image: url("./images/nav_control-up.png");
   background-repeat: no-repeat;
 }
 
@@ -2651,7 +2651,7 @@ li.BRtable-contents-el .BRTOCElementPage {
 .icon-search {
   width: 19px;
   height: 19px;
-  background-image: url("images/icon_search_button.svg");
+  background-image: url("./images/icon_search_button.svg");
 }
 
 .icon-chevron {

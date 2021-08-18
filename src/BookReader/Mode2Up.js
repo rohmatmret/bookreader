@@ -776,11 +776,9 @@ export class Mode2Up {
           "easeOutSine"
         );
 
-        this.br
-          .$(".BRgutter")
-          .css({
-            left: `${gutter - this.br.twoPage.bookSpineDivWidth * 0.5}px`,
-          });
+        this.br.$(".BRgutter").css({
+          left: `${gutter - this.br.twoPage.bookSpineDivWidth * 0.5}px`,
+        });
 
         this.pageContainers[newIndexR].$container.animate(
           { width: `${newWidthR}px` },
@@ -962,11 +960,9 @@ export class Mode2Up {
       speed,
       "easeInSine",
       () => {
-        this.br
-          .$("BRgutter")
-          .css({
-            left: `${gutter - this.br.twoPage.bookSpineDivWidth * 0.5}px`,
-          });
+        this.br.$("BRgutter").css({
+          left: `${gutter - this.br.twoPage.bookSpineDivWidth * 0.5}px`,
+        });
         $(this.br.leafEdgeTmp).animate(
           { left: `${gutter - newWidthL - leafEdgeTmpW}px` },
           speed,
@@ -1468,7 +1464,8 @@ export class Mode2Up {
     const { max, min } = Math;
     const { book } = this;
     const { currentIndexL, currentIndexR } = this.br.twoPage;
-    const ADJACENT_PAGES_TO_LOAD = 2;
+    //const ADJACENT_PAGES_TO_LOAD = 2;
+    const ADJACENT_PAGES_TO_LOAD = 1;
     // currentIndexL can be -1; getPage returns the last page of the book
     // when given -1, so need to prevent that.
     let lowPage = book.getPage(max(0, min(currentIndexL, currentIndexR)));

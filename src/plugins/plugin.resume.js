@@ -1,4 +1,5 @@
-import * as docCookies from '../util/docCookies.js';
+import * as docCookies from "../util/docCookies.js";
+import jQuery from "jquery";
 
 /* global BookReader */
 
@@ -15,8 +16,8 @@ jQuery.extend(BookReader.defaultOptions, {
 });
 
 /** @override */
-BookReader.prototype.init = (function(super_) {
-  return function() {
+BookReader.prototype.init = (function (super_) {
+  return function () {
     super_.call(this);
     if (this.options.enablePageResume) {
       this.bind(BookReader.eventNames.fragmentChange, () => {
@@ -33,8 +34,8 @@ BookReader.prototype.init = (function(super_) {
  *
  * @return {number|null}
  */
-BookReader.prototype.getResumeValue = function() {
-  const val = BookReader.docCookies.getItem('br-resume');
+BookReader.prototype.getResumeValue = function () {
+  const val = BookReader.docCookies.getItem("br-resume");
   if (val !== null) return parseInt(val);
   else return null;
 };
@@ -47,8 +48,8 @@ BookReader.prototype.getResumeValue = function() {
  * - ignores fragment part (after #)
  * @param {string} urlPathPart - window.location.pathname
  */
-BookReader.prototype.getCookiePath = function(urlPathPart) {
-  return urlPathPart.match('.+?(?=/page/|/mode/|$)')[0];
+BookReader.prototype.getCookiePath = function (urlPathPart) {
+  return urlPathPart.match(".+?(?=/page/|/mode/|$)")[0];
 };
 
 /**
@@ -58,11 +59,19 @@ BookReader.prototype.getCookiePath = function(urlPathPart) {
  * @param {Number} index leaf index
  * @param {string} [cookieName]
  */
-BookReader.prototype.updateResumeValue = function(index, cookieName) {
-  const ttl = new Date(+new Date + 12096e5); // 2 weeks
+BookReader.prototype.updateResumeValue = function (index, cookieName) {
+  const ttl = new Date(+new Date() + 12096e5); // 2 weeks
   // For multiple files in item, leave resumeCookiePath blank
   // It's likely we can remove resumeCookiePath using getCookiePath()
-  const path = this.options.resumeCookiePath
-    || this.getCookiePath(window.location.pathname);
-  BookReader.docCookies.setItem(cookieName || 'br-resume', index, ttl, path, null, false);
+  const path =
+    this.options.resumeCookiePath ||
+    this.getCookiePath(window.location.pathname);
+  BookReader.docCookies.setItem(
+    cookieName || "br-resume",
+    index,
+    ttl,
+    path,
+    null,
+    false
+  );
 };

@@ -12,7 +12,7 @@ export const DEFAULT_OPTIONS = {
   padding: 10,
 
   /** @type {'full' | 'embed' | 'responsive'} UI mode */
-  ui: 'full',
+  ui: "full",
 
   /** Controls whether nav/toolbar will autohide */
   uiAutoHide: false,
@@ -22,20 +22,20 @@ export const DEFAULT_OPTIONS = {
   thumbRowBuffer: 1,
   thumbColumns: 6,
   /** number of thumbnails to load at once */
-  thumbMaxLoading: 4,
+  thumbMaxLoading: 100,
   /** spacing between thumbnails */
   thumbPadding: 10,
 
   /** @type {number | 'fast' | 'slow'} speed for flip animation */
-  flipSpeed: 'fast',
+  flipSpeed: "fast",
 
   showToolbar: true,
   showNavbar: true,
-  navBarTitle: '',
+  navBarTitle: "",
 
-  showLogo: true,
+  showLogo: false,
   /** Where the logo links to */
-  logoURL: 'https://archive.org',
+  logoURL: "https://archive.org",
 
   /**
    * Base URL for UI images - should be overridden (before init) by
@@ -43,10 +43,10 @@ export const DEFAULT_OPTIONS = {
    * $$$ This is the same directory as the images referenced by relative
    *     path in the CSS.  Would be better to automagically find that path.
    */
-  imagesBaseURL: '/BookReader/images/',
+  imagesBaseURL: "/BookReader/images/",
 
   /** @type {'pow2' | 'integer'} What reduces are valid for getURI. */
-  reduceSet: 'pow2',
+  reduceSet: "pow2",
 
   /**
    * Zoom levels
@@ -55,19 +55,19 @@ export const DEFAULT_OPTIONS = {
    * The autofit code ensures that fit to width and fit to height will be available
    */
   reductionFactors: [
-    {reduce: 0.25, autofit: null},
-    {reduce: 0.5, autofit: null},
-    {reduce: 1, autofit: null},
-    {reduce: 2, autofit: null},
-    {reduce: 3, autofit: null},
-    {reduce: 4, autofit: null},
-    {reduce: 6, autofit: null}
+    { reduce: 0.25, autofit: null },
+    { reduce: 0.5, autofit: null },
+    { reduce: 1, autofit: null },
+    { reduce: 2, autofit: null },
+    { reduce: 3, autofit: null },
+    { reduce: 4, autofit: null },
+    { reduce: 6, autofit: null },
   ],
 
   /** Object to hold parameters related to 1up mode */
   onePage: {
     /** @type {AutoFitValues} */
-    autofit: 'auto',
+    autofit: "auto",
   },
 
   /** Object to hold parameters related to 2up mode */
@@ -79,12 +79,12 @@ export const DEFAULT_OPTIONS = {
     /** Width of book spine  $$$ consider sizing based on book length */
     bookSpineDivWidth: 64,
     /** @type {AutoFitValues} */
-    autofit: 'auto'
+    autofit: "auto",
   },
 
   onePageMinBreakpoint: 800,
 
-  bookTitle: '',
+  bookTitle: "",
   /** @type {string} */
   bookUrl: null,
   /** @type {string} */
@@ -119,16 +119,16 @@ export const DEFAULT_OPTIONS = {
 
   /** CSS selectors */
   /** Where BookReader mounts to */
-  el: '#BookReader',
+  el: "#BookReader",
 
   /** @type {'lr' | 'rl'} Page progression */
-  pageProgression: 'lr',
+  pageProgression: "lr",
 
   /** The PPI the book is scanned at **/
   ppi: 500,
 
   /** Should image downloads be blocked */
-  protected: false,
+  protected: true,
 
   /**
    * Settings for individual plugins. Note they have to be imported first.
@@ -137,6 +137,7 @@ export const DEFAULT_OPTIONS = {
    **/
   plugins: {
     /** @type {import('../plugins/plugin.text_selection.js').TextSelectionPluginOptions} */
+
     textSelection: null,
   },
 
@@ -216,56 +217,56 @@ export const DEFAULT_OPTIONS = {
   controls: {
     bookLeft: {
       visible: true,
-      label: 'Flip left',
-      className: 'book_left',
-      iconClassName: 'left-arrow'
+      label: "Flip left",
+      className: "book_left",
+      iconClassName: "left-arrow",
     },
     bookRight: {
       visible: true,
-      label: 'Flip right',
-      className: 'book_right',
-      iconClassName: 'left-arrow hflip'
+      label: "Flip right",
+      className: "book_right",
+      iconClassName: "left-arrow hflip",
     },
     onePage: {
       visible: true,
-      label: 'One-page view',
-      className: 'onepg',
-      iconClassName: 'onepg'
+      label: "One-page view",
+      className: "onepg",
+      iconClassName: "onepg",
     },
     twoPage: {
       visible: true,
-      label: 'Two-page view',
-      className: 'twopg',
-      iconClassName: 'twopg'
+      label: "Two-page view",
+      className: "twopg",
+      iconClassName: "twopg",
     },
     thumbnail: {
       visible: true,
-      label: 'Thumbnail view',
-      className: 'thumb',
-      iconClassName: 'thumb'
+      label: "Thumbnail view",
+      className: "thumb",
+      iconClassName: "thumb",
     },
     viewmode: {
       visible: true,
-      className: 'viewmode',
+      className: "viewmode",
       excludedModes: [],
     },
     zoomOut: {
       visible: true,
-      label: 'Zoom out',
-      className: 'zoom_out',
-      iconClassName: 'magnify'
+      label: "Zoom out",
+      className: "zoom_out",
+      iconClassName: "magnify",
     },
     zoomIn: {
       visible: true,
-      label: 'Zoom in',
-      className: 'zoom_in',
-      iconClassName: 'magnify plus'
+      label: "Zoom in",
+      className: "zoom_in",
+      iconClassName: "magnify plus",
     },
     fullScreen: {
       visible: true,
-      label: 'Toggle fullscreen',
-      className: 'full',
-      iconClassName: 'fullscreen'
+      label: "Toggle fullscreen",
+      className: "full",
+      iconClassName: "fullscreen",
     },
   },
 
@@ -317,4 +318,3 @@ export const DEFAULT_OPTIONS = {
  */
 
 /** @typedef {typeof DEFAULT_OPTIONS} BookReaderOptions */
-

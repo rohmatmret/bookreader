@@ -1,26 +1,22 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ViewBooks from "./components/reader";
+
+import ReaderLoad from "./components/BookReaderJSAdvanced";
+import Cookies from "js-cookie";
 
 function Reader() {
   const [slug, setSlug] = useState("");
-  // const [totalPageCount, setTotalPageCount] = useState(0);
   let params = useParams();
-  
 
-  
-  useEffect(()=>{
-    // console.log(totalPage, 'total page')
-    setSlug(params.itemid)
-    // setTotalPageCount(totalPage)
-    // console.log(props.pageCount)
-  })
+  useEffect(() => {
+    let token = Cookies.get("token");
+    setSlug(params.itemid);
+    if (slug) {
+      ReaderLoad("#BookReader1", slug, 10, token);
+    }
+  }, [params, slug]);
 
-  return (
-    <div className="App">
-      <ViewBooks params={slug}/>
-    </div>
-  );
+  return <div id="BookReader1"></div>;
 }
 
 export default Reader;
