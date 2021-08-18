@@ -4,6 +4,8 @@ import useDarkMode from '../SetThemes.js';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {Link } from 'react-router-dom'
+import Cookies from 'js-cookie';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 const screenfull = require('screenfull');
 
 
@@ -18,8 +20,8 @@ const Reader = (params) => {
     const [hasMore, setHasMore]     = useState(true);
     const [pages, setPages]         = useState(1);
     const observer                  = useRef();
-    const [zoomIn, setZoomIn] = useState(false);
-    const [zoomOut, setZoomOut] = useState(false);
+    // const [zoomIn, setZoomIn] = useState(false);
+    // const [zoomOut, setZoomOut] = useState(false);
     const totalPage = useSelector(state => state.pageCount)
     const title = useSelector(state => state.title)
     const TOTAL_PAGES = totalPage;
@@ -50,7 +52,7 @@ const Reader = (params) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         await axios.get(`https://dev.apps-foundry.com/scoopcor/api/v1/items/${Number(slug)}/web-reader/${index}.jpg`,
-        { headers: { Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25zIjpbXSwidXNlcl9pZCI6MTg1NDgxOCwiZXhwIjoxNjI5MTc1MjQwLCJyb2xlcyI6WzldLCJpc3MiOiJTQ09PUCIsInNpZyI6ImIwNzI3NjdlYzU0ZGNkNWFkODU1MGFjMmNjODIzMWRjODlkMTg1NWEiLCJleHBpcmVfdGltZWRlbHRhIjowLCJ1c2VyX25hbWUiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZW1haWwiOiJqYXRtaWtvLmRhdGFAZ21haWwuY29tIiwiZGV2aWNlX2lkIjpudWxsfQ.ugfMEe3gGwI0scvua0c0JtoNz2D7MNbAwsPQ35SzO-Q' }, responseType: 'blob' }
+        { headers: { Authorization:Cookies.get('token')}, responseType: 'blob' }
       ).then((response)=>{
         let image = window.URL.createObjectURL(response.data)
         setItems([...items, `${image}`])
@@ -141,8 +143,8 @@ const Reader = (params) => {
     }
 
     const changeValue = (e) => {
-        setPageNumber(e)
-        if(e != null || e != ""){
+        if(e != null || e != "" || e != 0){
+            setPageNumber(e)
             var pageId = document.getElementById(e)
             if(pageId){
                 pageId.scrollIntoView();
@@ -154,14 +156,17 @@ const Reader = (params) => {
     return(
         <>
             <div>
-                {/* {menu &&
-                    <div className="w-1/6 transition duration-500 ease-out-in transform bg-gray-700 dark:bg-white">
-                        side menu
-                    </div>
-                } */}
+            <TransformWrapper
+                    initialScale={1}
+                    initialPositionX={1}
+                    initialPositionY={1}
+                    centerOnInit={true}
+                    wheel={{disabled: true}}
+                >
+                    {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
                 <div className="w-full">
-                    <div className="bg-white min-h-14 dark:bg-gray-800 space-x-10 grid grid-cols-3 items-center sticky top-0">
-                        <div className="px-12 text-black dark:text-white flex">
+                    <div className="bg-white min-h-14 dark:bg-gray-800 space-x-10 grid grid-cols-3 items-center sticky top-0 z-50">
+                        <div className="px-12 text-black dark:text-white flex" onClick={() => toggleFullScreen()}>
                             <ChevronLeftIcon className="w-5 h-5 dark:text-white text-black mt-1"/>
                             <span className="mt-0.5"><Link to="/">back to home</Link></span>
                         </div>
@@ -169,32 +174,20 @@ const Reader = (params) => {
                            {title}
                         </div>
                         <div className="flex flex-nowrap ml-64 space-x-10 absolute right-20">
-                            {/* <SearchIcon className="w-3.5 mt-1 h-full text-black dark:text-white cursor-pointer" onClick={()=>setSearch(!search)}/> */}
-                            <button onClick={() => setZoomIn(!zoomIn)}><ZoomInIcon className="w-5 h-full text-black dark:text-white"/></button>
-                            <button onClick={() => setZoomOut(!zoomOut)}><ZoomOutIcon className="w-5 h-full text-black dark:text-white"/></button>
+                            <button onClick={() => zoomIn()}><ZoomInIcon className="w-5 h-full text-black dark:text-white"/></button>
+                            <button onClick={() => zoomOut()}><ZoomOutIcon className="w-5 h-full text-black dark:text-white"/></button>
                             <ArrowsExpandIcon className="w-5 h-full text-black dark:text-white cursor-pointer" onClick={()=>toggleFullScreen()}/>
-                            <CogIcon className="w-5 h-full text-black dark:text-white cursor-pointer" onClick={()=>setLayout(!layout)}/>
-                            {/* <MenuIcon className="w-5 h-full ml-8 text-black dark:text-white cursor-pointer" onClick={()=>setMenu(!menu)}/> */}
-                            {/* {search &&
-                                <div className="origin-top-right absolute right-32 mt-10 transition duration-150 ease-out w-56 rounded-md shadow-lg py-3 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                                    <input typ="search" className="focus:outline-none py-2 ml-4 px-4 w-5/6 rounded-md"/>
-                                </div>
-                            } */}
+                            {/* <CogIcon className="w-5 h-full text-black dark:text-white cursor-pointer" onClick={()=>setLayout(!layout)}/> */}
                         </div>
                     </div>
-                    {/* <div>
-                        <button className="p-2" onClick={()=>setTheme(colorTheme)}>click darkMode</button>
-                        <button className="p-2" onClick={()=>toggleFullScreen()}>click</button>
-                    </div> */}
-                        <div className={!layout ? "flex flex-col space-x-4 w-full mx-auto" : "grid grid-cols-2 gap-2 w-full mx-auto"} style={{minHeight:'750px'}}>
+                    <TransformComponent>
+                        <div className={!layout ? "flex flex-col space-x-4 w-screen mx-auto space-y-4" : "grid grid-cols-2 gap-2 w-screen mx-auto space-y-4"} style={{minHeight:'750px'}}>
                             {items.map((item, index) => 
                                 index + 1 === items.length ? (
                                     <Item reference={lastItemRef} key={index} ids={index}>
                                         <div 
                                             className={
-                                                (zoomIn &&"w-full h-full md:w-4/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
-                                                (zoomOut && "w-full h-full md:w-2/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
-                                                "w-full h-full md:w-3/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex"
+                                                "w-2/5 h-full bg-gray-300 mx-auto p-4 rounded mb-4 flex"
                                             }
                                         >
                                             <img src={item} alt={index} className="w-full h-full mx-auto" onDragStart={(e)=>preventDrag(e)}/>
@@ -204,9 +197,7 @@ const Reader = (params) => {
                                     <Item reference={lastItemRef} key={index} ids={index}>
                                         <div 
                                             className={
-                                                (zoomIn &&"w-full h-full md:w-4/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
-                                                (zoomOut && "w-full h-full md:w-2/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex") || 
-                                                "w-full h-full md:w-3/5 bg-gray-300 mx-auto p-4 rounded mb-4 flex"
+                                                "w-2/5 h-full bg-gray-300 mx-auto p-4 rounded mb-4 flex"
                                             }
                                         >
                                             <img src={item} alt={index} className="w-full h-full mx-auto" onDragStart={(e)=>preventDrag(e)}/>
@@ -215,6 +206,7 @@ const Reader = (params) => {
                                 )
                             )}
                         </div>
+                    </TransformComponent>
                     <div>
                         {isLoading && <Loader />}
                     </div>
@@ -225,6 +217,8 @@ const Reader = (params) => {
                         </div>
                     </div>
                 </div>
+                )}
+                </TransformWrapper>
             </div>
         </>
     )

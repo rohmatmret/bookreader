@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
+import {UserCircleIcon} from '@heroicons/react/outline';
 import { useHistory } from "react-router-dom";
 
 const UserDropdown = () => {
@@ -7,9 +8,10 @@ const UserDropdown = () => {
   const username = Cookies.get('username') != null ? Cookies.get('username') : '';
 
   const handleLogout = () => {
-    Cookies.remove('username')
-    Cookies.remove('token')
-    History.push('/login')
+    Cookies.remove('username');
+    Cookies.remove('token');
+    Cookies.remove('offerId');
+    window.location.href = '/login';
   }
 
   return (
@@ -28,11 +30,12 @@ const UserDropdown = () => {
               }}
             >
               <span className="text-lg font-normal">{username}</span>
-              <img
+              {/* <img
                 className="h-8 w-8 rounded-full"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt=""
-              />
+              /> */}
+              <UserCircleIcon className="w-10 h-10 "/>
             </button>
           </div>
           {menu && (

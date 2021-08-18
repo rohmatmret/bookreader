@@ -2,11 +2,12 @@ import React from "react";
 import Icon from "../assets/book-reading.png";
 import { Link } from "react-router-dom";
 import {useDispatch} from 'react-redux';
+import Cookies from "js-cookie";
 import { setPageCount, setTitle } from "../rootSlice";
 
-const CardItem = ({ image, title, author,offerId, url, pageCount }) => {
+const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
   const dispatch = useDispatch();
-  // const basePageCount = useSelector(state => state.pageCount);
+  const offerBuffet = Cookies.get('offerId');
 
   const handleStorePageCount = () => {
     dispatch(setPageCount(pageCount))
@@ -26,6 +27,7 @@ const CardItem = ({ image, title, author,offerId, url, pageCount }) => {
       <div className="mb-6">
         <span className="text-xs text-gray-500">{author}</span>
       </div>
+      {params === offerBuffet ?
       <div className="mx-auto text-center bg-blue-500 rounded-md py-1 px-2 flex grid grid-cols-2 gap-0">
         <img
           src={Icon}
@@ -40,6 +42,8 @@ const CardItem = ({ image, title, author,offerId, url, pageCount }) => {
           </Link>
         </button>
       </div>
+       : ""
+      }
     </div>
   );
 };

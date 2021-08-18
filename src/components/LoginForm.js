@@ -26,6 +26,28 @@ const LoginForm = () => {
     return encPassword;
   };
 
+  const ownedBuffet = () => {
+    axios.get(process.env.REACT_APP_BASE_URL + "owned_buffets",{
+      headers: {Authorization:Cookies.get('token')}
+    })
+    .then((res)=>{
+      // console.log(res)
+      var data =  res.data.owned_buffets;
+      var offerId;
+      data.map((item, index)=>{
+        offerId = item.offerbuffet.offer.id
+        return offerId
+      })
+      Cookies.set('offerId', offerId);
+      setLoading(false);
+      window.location.href = "/dashboard";
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(JSON.stringify(err));
+    });
+  }
+
   const handleSubmit = (event) => {
     console.log(process.env.REACT_APP_BASE_URL);
     event.preventDefault();
@@ -45,8 +67,7 @@ const LoginForm = () => {
         // localStorage.setItem("username", res.data.first_name);
         Cookies.set("token", res.data.realm + " " + res.data.token);
         Cookies.set("username", res.data.first_name);
-        setLoading(false);
-        window.location.href = "/dashboard";
+        ownedBuffet();
       })
       .catch((err) => {
         console.log(err);
