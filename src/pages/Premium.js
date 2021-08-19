@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CardItem from "../components/CardItem";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import SideMenu from "../components/SideMenu";
 import axios from "axios";
@@ -15,7 +15,15 @@ export default function PremiumOffers() {
   const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
   const [slug, setSlug] = useState("");
-  let params = useParams();
+
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+
+  // let params = useParams();
+  let params = useQuery();
+  var paramsId = params.get('offerid');
+  console.log(params.get('offerid'));
 
   const filterBook =
     Items !== ""
@@ -29,9 +37,9 @@ export default function PremiumOffers() {
       : "";
 
   useEffect(() => {
-    setSlug(params.offerid);
-    OfferBuffets(params.offerid);
-  }, [params.offerid]);
+    setSlug(paramsId);
+    OfferBuffets(paramsId);
+  }, [paramsId]);
 
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
@@ -39,7 +47,7 @@ export default function PremiumOffers() {
       { headers: { Authorization: Cookies.get("token") } }
     ).catch(err => {
       if(err){
-        window.location.href = "/"
+        window.location.href = "/404"
       }
     });
 
@@ -55,13 +63,13 @@ export default function PremiumOffers() {
       <SideMenu />
       <div className="relative md:ml-64">
         <Header />
-        <div className="bg-blue-500 h-96 pt-12">
+        <div className="h-96 pt-24">
           <div className="px-4 md:px-10 mx-auto w-full">
             <form className="pt-4 pb-8">
               <input
                 type="search"
                 placeholder="Search"
-                className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-500 placeholder-opacity-50 rounded-full focus:outline-none"
+                className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-500 placeholder-opacity-50 rounded-full focus:outline-none font-nunito"
                 onChange={(e) => {
                   setSearchItems(e.target.value);
                 }}
@@ -80,7 +88,7 @@ export default function PremiumOffers() {
                         url={books.images}
                         key={books.id}
                         pageCount={books.page_count}
-                        params={params.offerid}
+                        params={paramsId}
                       />
                     );
                   })
