@@ -67,7 +67,7 @@ const SideMenu = () => {
               </div>
             </div>
             {/* Heading */}
-            <h6 className="md:min-w-full text-blue-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline font-nunito">
+            <h6 className="md:min-w-full text-gray-900 text-base uppercase font-extrabold block pt-1 pb-4 no-underline font-nunito">
               Grasindo
             </h6>
             {/* Navigation */}
@@ -79,11 +79,11 @@ const SideMenu = () => {
                       <li className="items-center" key={p.id}>
                         <Link
                           className={
-                            "text-xs uppercase py-3 font-bold font-nunito block " +
+                            "text-xs uppercase py-3 my-1 font-bold font-nunito block " +
                             (window.location.href.indexOf(
                               "/premium?name=" +p.value+ "&offerid=" + p.id
                             ) !== -1
-                              ? "text-blue-500 hover:text-blue-600"
+                              ? "text-white bg-blue-600 px-2 rounded-md"
                               : "text-gray-700 hover:text-white hover:bg-blue-500 px-2 rounded-md")
                           }
                           to={"/premium?name=" +p.value+ "&offerid=" + p.id}
