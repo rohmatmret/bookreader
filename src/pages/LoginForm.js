@@ -96,43 +96,43 @@ const LoginForm = () => {
       <div className="flex flex-row">
         <div className="w-full mt-14 lg:mt-24">
           <img src={logo} alt="logo_gramedia" className="h-20 mx-auto" />
-          <h3 className="mt-6 mb-20 md:mb-24 mx-10 md:mx-40 text-2xl font-bold text-gray-900 font-nunito">
+          <h3 className="mt-6 mb-20 md:mb-24 mx-10 md:mx-40 text-2xl font-bold text-black font-nunito">
             Masuk
           </h3>
           <form className="mx-10 md:mx-40 space-y-4">
             <div className="flex flex-col space-y-1 border-b-2">
-              <label htmlFor="email" className="font-normal text-gray-600">
+              <label htmlFor="email" className="font-nunito text-gray-600">
                 Email Address
               </label>
               <input
                 type="email"
                 id="username"
                 name="username"
-                className="px-4 py-2 focus:outline-none"
+                className="px-4 py-2 focus:outline-none font-nunito"
                 onChange={(e) => setState({ username: e.target.value })}
               />
             </div>
             <div className="flex flex-col border-b-2">
-              <label htmlFor="password" className="font-normal text-gray-600">
+              <label htmlFor="password" className="font-nunito text-gray-600">
                 Password
               </label>
               <input
                 type="password"
                 id="password"
-                className="px-4 py-2 focus:outline-none"
+                className="px-4 py-2 focus:outline-none font-nunito"
                 onChange={(e) =>
                   setState((prev) => ({ ...prev, password: e.target.value }))
                 }
               />
             </div>
             {errPassword ?
-              <p className="text-red-600">
+              <p className="text-red-600 text-base font-nunito">
                 Email atau Password yang anda masukkan tidak sesuai.
               </p>
               :
               ""
             }
-            <div className="text-sm text-blue-600 font-normal">
+            <div className="text-sm text-blue-500 font-bold font-nunito">
               <a href="https://ebooks.gramedia.com/id/forgot">
                 Lupa kata sandi ?
               </a>
@@ -141,8 +141,8 @@ const LoginForm = () => {
               <button
                 className={
                   state.username && state.password
-                    ? "bg-blue-500 px-20 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto"
-                    : "bg-gray-100 px-20 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold"
+                    ? "bg-blue-500 px-20 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto font-nunito"
+                    : "bg-gray-100 px-20 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold font-nunito"
                 }
                 onClick={handleSubmit}
               >
@@ -154,22 +154,13 @@ const LoginForm = () => {
                 Masuk
               </button>
             </div>
-            <div className="text-center text-sm ">
-              baru di Gramedia Digital?
-              <a
-                href="https://ebooks.gramedia.com/id/register"
-                className="text-blue-600 font-bold"
-              >
-                Daftar
-              </a>
-            </div>
           </form>
           <div className="mx-10 md:mx-40 mt-40">
-            <p className="text-center text-sm sm:text-normal">
+            <p className="text-center text-sm sm:text-normal font-nunito font-bold">
               Butuh bantuan ?{" "}
               <a
                 href="https://ebooks.gramedia.com/id/faq"
-                className="text-blue-600"
+                className="text-blue-500"
               >
                 Hubungi Gramedia Digital Customer Service
               </a>
