@@ -5,17 +5,17 @@ import {useDispatch} from 'react-redux';
 import Cookies from "js-cookie";
 import { setPageCount, setTitle } from "../rootSlice";
 
-const getOffers =(offers)=> {
-  return JSON.parse(offers)
-}
+
 
 const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
   const dispatch = useDispatch();
-  const offerBuffet = Cookies.get('offer');
-  const getPackage = getOffers(offerBuffet)
+  const offerBuffet = Cookies.get('offer') != null ? Cookies.get('offer') : "";
+  const getPackage = offerBuffet !== "" ? JSON.parse(offerBuffet) : "";
   const offerIds = getPackage ? getPackage.map((item, index)=>{
     return Number(item.offerId);
   }): '';
+
+  
 
   const handleStorePageCount = () => {
     dispatch(setPageCount(pageCount))

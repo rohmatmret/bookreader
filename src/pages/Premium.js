@@ -15,16 +15,14 @@ export default function PremiumOffers() {
   const [isLoading, setLoading] = useState(true);
   const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
-  const [slug, setSlug] = useState("");
   const offerId = useSelector((state) => state.offer)
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
 
-  // let params = useParams();
   let params = useQuery();
-  var paramsId = params.get('offerid');
+  var paramsId = params ? params.get('offerid') : "";
 
   const filterBook =
     Items !== ""
@@ -38,7 +36,6 @@ export default function PremiumOffers() {
       : "";
 
   useEffect(() => {
-    setSlug(paramsId);
     OfferBuffets(paramsId);
   }, [paramsId]);
 
