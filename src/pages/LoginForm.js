@@ -4,6 +4,8 @@ import { React, useState } from "react";
 import axios from "axios";
 import { RefreshIcon } from "@heroicons/react/outline";
 import Cookies from "js-cookie";
+import { setOffer } from "../rootSlice";
+import {useDispatch} from 'react-redux';
 const sha1 = require("js-sha1");
 
 require("dotenv").config();
@@ -18,6 +20,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
   const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
+  const dispatch = useDispatch();
 
   const HashPassword = (password) => {
     const hash = sha1.create();
@@ -35,19 +38,20 @@ const LoginForm = () => {
       var data =  res.data.owned_buffets;
       var offerId;
       var packageName;
-      var offer;
+      var offer = [];
       if(countOnBuffets > 0){
         data.map((item, index)=>{
           offerId = item.offerbuffet.offer.id
           packageName = item.offerbuffet.offer.name
-          offer = {
+          offer.push({
             "offerId": offerId,
             "name": packageName,
-          }
+          })
           return offer
         })
-        Cookies.set('offerId', offer.offerId);
-        Cookies.set('package_name', offer.name);
+        Cookies.set("offer", JSON.stringify(offer));
+        // var offerVar = setOffer(JSON.stringify(offer));
+        // dispatch(JSON.parse(offerVar));
         setLoading(false);
         window.location.href = "/dashboard";
       }else{

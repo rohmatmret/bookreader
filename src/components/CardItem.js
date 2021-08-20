@@ -5,9 +5,17 @@ import {useDispatch} from 'react-redux';
 import Cookies from "js-cookie";
 import { setPageCount, setTitle } from "../rootSlice";
 
+const getOffers =(offers)=> {
+  return JSON.parse(offers)
+}
+
 const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
   const dispatch = useDispatch();
-  const offerBuffet = Cookies.get('offerId');
+  const offerBuffet = Cookies.get('offer');
+  const getPackage = getOffers(offerBuffet)
+  const offerIds = getPackage ? getPackage.map((item, index)=>{
+    return Number(item.offerId);
+  }): '';
 
   const handleStorePageCount = () => {
     dispatch(setPageCount(pageCount))
@@ -27,7 +35,7 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
       <div className="mb-6">
         <span className="text-xs text-gray-500 font-nunito">{author}</span>
       </div>
-      {params === offerBuffet ?
+      {offerIds.includes(Number(params)) ?
       <div className="mx-auto text-center bg-blue-500 rounded-md py-1 px-2 flex grid grid-cols-2 gap-0">
         <img
           src={Icon}

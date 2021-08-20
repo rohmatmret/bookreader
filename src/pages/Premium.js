@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CardItem from "../components/CardItem";
 import { useParams, useLocation } from "react-router-dom";
+import {useSelector} from 'react-redux';
 import Header from "../components/Header";
 import SideMenu from "../components/SideMenu";
 import axios from "axios";
@@ -15,6 +16,7 @@ export default function PremiumOffers() {
   const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
   const [slug, setSlug] = useState("");
+  const offerId = useSelector((state) => state.offer)
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -23,7 +25,6 @@ export default function PremiumOffers() {
   // let params = useParams();
   let params = useQuery();
   var paramsId = params.get('offerid');
-  console.log(params.get('offerid'));
 
   const filterBook =
     Items !== ""
@@ -52,7 +53,6 @@ export default function PremiumOffers() {
     });
 
     if (Result) {
-        console.log(Result, 'res')
         setItems(Result.data);
         setLoading(false);
     }
