@@ -26,7 +26,7 @@ const SideMenu = () => {
           </button>
           {/* Brand */}
           <Link
-            className="md:block text-left md:pb-2 text-blueGray-600 mr-0 hidden whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+            className="md:block text-left md:pb-2 text-gray-600 mr-0 hidden whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             to="/"
           >
             <img src={Logo} alt="Gramedia Digital" />
@@ -49,7 +49,7 @@ const SideMenu = () => {
               <div className="flex flex-wrap">
                 <div className="w-6/12">
                   <Link
-                    className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+                    className="md:block text-left md:pb-2 text-blue-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                     to="/"
                   >
                     <img src={Logo} alt="Gramedia Digital" />
@@ -67,7 +67,7 @@ const SideMenu = () => {
               </div>
             </div>
             {/* Heading */}
-            <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+            <h6 className="md:min-w-full text-gray-900 text-base uppercase font-extrabold block pt-1 pb-4 no-underline font-nunito">
               Grasindo
             </h6>
             {/* Navigation */}
@@ -76,17 +76,17 @@ const SideMenu = () => {
               {Premium
                 ? Premium.map((p) => {
                     return (
-                      <li className="items-center">
+                      <li className="items-center" key={p.id}>
                         <Link
                           className={
-                            "text-xs uppercase py-3 font-bold block " +
+                            "text-xs uppercase py-3 my-1 font-bold font-nunito block " +
                             (window.location.href.indexOf(
-                              "/premium/" + p.id
+                              "/premium?name=" +p.value+ "&offerid=" + p.id
                             ) !== -1
-                              ? "text-lightBlue-500 hover:text-lightBlue-600"
-                              : "text-blueGray-700 hover:text-blueGray-500")
+                              ? "text-white bg-blue-600 px-2 rounded-md"
+                              : "text-gray-700 hover:text-white hover:bg-blue-500 px-2 rounded-md")
                           }
-                          to={"/premium/" + p.id}
+                          to={"/premium?name=" +p.value+ "&offerid=" + p.id}
                         >
                           {p.name}
                         </Link>
@@ -104,12 +104,12 @@ const SideMenu = () => {
 
 const PremiumList = () => {
   let data = [
-    { id: 112023, name: "Paket Grasindo SD Kelas 1" },
-    { id: 112024, name: "Paket Grasindo SD Kelas 2" },
-    { id: 112026, name: "Paket Grasindo SD Kelas 3" },
-    { id: 112027, name: "Paket Grasindo SD Kelas 4" },
-    { id: 112028, name: "Paket Grasindo SD Kelas 5" },
-    { id: 112029, name: "Paket Grasindo SD Kelas 6" },
+    { id: 112023, name: "Paket Grasindo SD Kelas 1", value: "paket-grasindo-1" },
+    { id: 112024, name: "Paket Grasindo SD Kelas 2", value: "paket-grasindo-2" },
+    { id: 112026, name: "Paket Grasindo SD Kelas 3", value: "paket-grasindo-3" },
+    { id: 112027, name: "Paket Grasindo SD Kelas 4", value: "paket-grasindo-4" },
+    { id: 112028, name: "Paket Grasindo SD Kelas 5", value: "paket-grasindo-5" },
+    { id: 112029, name: "Paket Grasindo SD Kelas 6", value: "paket-grasindo-6" },
   ];
   return data;
 };
