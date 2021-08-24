@@ -1,8 +1,25 @@
 ---
 stages:
 #  - analyze
-  - staging
-  - master
+  - Staging
+  - Production
+
+Staging:
+  variables:
+    CLUSTERGCP: test
+  stage: Staging
+  before_script:
+    - export REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+  image: google/cloud-sdk
+  services:
+    - docker:dind
+  script:
+    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
+  only:
+    - /^release/.*$/i
 
 #sonarcloud-check:
 #  stage: analyze
@@ -22,27 +39,10 @@ stages:
 #    - merge_requests
 #    - master
 
-staging:
-  variables:
-    CLUSTERGCP: test
-  stage: staging
-  before_script:
-    - export REACT_APP_BASE_URL=$REACT_APP_BASE_URL
-  image: google/cloud-sdk
-  services:
-    - docker:dind
-  script:
-    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
-    - gcloud auth activate-service-account --key-file gcloud-service-key.json
-    - gcloud config set project $GCP_PROJECT_ID
-    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
-  only:
-    - /^release/.*$/i
-
-master:
+Production:
   variables:
     CLUSTERGCP: gramedia-production
-  stage: /^release/.*$/i
+  stage: Production
   image: google/cloud-sdk
   services:
     - docker:dind
@@ -51,6 +51,8 @@ master:
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
+  needs:
+    - job: analyze
   when: manual
   only:
     - /^release/.*$/i
