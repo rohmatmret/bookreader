@@ -1,13 +1,13 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_NAME', '.']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_SHA', '.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_NAME']
+  args: ['push', 'gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_SHA']
 - name: "gcr.io/cloud-builders/gke-deploy"
   args:
   - run
   - --filename=deployment.yml
-  - --image=gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_NAME
+  - --image=gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_SHA
   - --location=asia-southeast2-a
   - --cluster=$_CLUSTERIN
-images: ['gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_NAME']
+images: ['gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_REF_SHA']
