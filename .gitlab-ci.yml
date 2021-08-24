@@ -8,16 +8,15 @@ Staging:
   variables:
     CLUSTERGCP: test
   stage: Staging
-  before_script:
-    - export REACT_APP_BASE_URL=$REACT_APP_BASE_URL
   image: google/cloud-sdk
   services:
     - docker:dind
   script:
+    - sed -i 's/%REACT_APP_BASE%/'${_REACT_APP_BASE_URL}'/g' pages/LoginForm.yaml
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
-    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
+    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP,_REACT_APP_BASE_URL=$REACT_APP_BASE_URL
   only:
     - /^release/.*$/i
 
