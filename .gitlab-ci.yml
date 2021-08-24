@@ -22,6 +22,7 @@ Staging:
   only:
     - /^release/.*$/i
 
+    
 #Sonarcloud:
 #  stage: Sonarcloud
 #  image:
