@@ -52,7 +52,7 @@ Production:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
   needs:
-    - job: analyze
+    - job: Sonarcloud
   when: manual
   only:
     - /^release/.*$/i
