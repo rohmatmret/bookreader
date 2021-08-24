@@ -18,11 +18,11 @@ Staging:
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
-    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP,_CI_COMMIT_SHA=$CI_COMMIT_SHA
+    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP,_CI_COMMIT_SHA=$CI_COMMIT_SHA
   only:
     - /^release/.*$/i
 
-    
+
 #Sonarcloud:
 #  stage: Sonarcloud
 #  image:
