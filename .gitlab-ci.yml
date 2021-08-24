@@ -8,9 +8,9 @@ Staging:
   variables:
     CLUSTERGCP: test
   before_script:
-    - sed -i 's+REACT_APP_BASE_URL+$REACT_APP_BASE_URL_STAGING+g' src/pages/LoginForm.js 
-    - sed -i 's/REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING/g' src/pages/Premium.js
-    - sed -i 's+REACT_APP_BASE_URL+$REACT_APP_BASE_URL_STAGING+g' src/components/CustomReader.js
+    - sed -i 's/REACT_APP_BASE_URL/'${REACT_APP_BASE_URL_STAGING}'/g' src/pages/Premium.js
+    - sed -i 's+REACT_APP_BASE_URL+${REACT_APP_BASE_URL_STAGING}+g' src/pages/LoginForm.js 
+    - sed -i 's+REACT_APP_BASE_URL+${REACT_APP_BASE_URL_STAGING}+g' src/components/CustomReader.js
   stage: Staging
   image: google/cloud-sdk
   services:
