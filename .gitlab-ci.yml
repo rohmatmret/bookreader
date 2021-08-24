@@ -21,7 +21,7 @@ Staging:
   only:
     - /^release/.*$/i
 
-sonarcloud-check:
+Sonarcloud:
   stage: Sonarcloud
   image:
     name: sonarsource/sonar-scanner-cli:latest
