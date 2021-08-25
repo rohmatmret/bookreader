@@ -19,18 +19,17 @@ const LoginForm = () => {
   const [state, setState] = useState(FormLogin);
   const [loading, setLoading] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
-  const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
+  const secretPassword = "5gvi-ojhgf%^&YGBNeds1{"
   const dispatch = useDispatch();
 
   const HashPassword = (password) => {
     const hash = sha1.create();
     let encPassword = hash.update(secretPassword + password).hex();
-    console.log(encPassword);
     return encPassword;
   };
 
   const ownedBuffet = () => {
-    axios.get(process.env.REACT_APP_BASE_URL + "owned_buffets",{
+    axios.get("https://dev.apps-foundry.com/scoopcor/api/v1/owned_buffets",{
       headers: {Authorization:Cookies.get('token')}
     })
     .then((res)=>{
@@ -77,7 +76,7 @@ const LoginForm = () => {
     };
 
     axios
-      .post(process.env.REACT_APP_BASE_URL + "auth/login", data)
+      .post("https://dev.apps-foundry.com/scoopcor/api/v1/auth/login", data)
       .then((res) => {
         setState(FormLogin);
         Cookies.set("token", res.data.realm + " " + res.data.token);

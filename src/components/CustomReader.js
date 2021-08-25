@@ -51,7 +51,7 @@ const Reader = (params) => {
         var slug = params.params
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        await axios.get(`${process.env.REACT_APP_BASE_URL}items/${Number(slug)}/web-reader/${index}.jpg`,
+        await axios.get(`https://dev.apps-foundry.com/scoopcor/api/v1/items/${Number(slug)}/web-reader/${index}.jpg`,
         { headers: { Authorization:Cookies.get('token')}, responseType: 'blob' }
       ).then((response)=>{
         let image = window.URL.createObjectURL(response.data)
