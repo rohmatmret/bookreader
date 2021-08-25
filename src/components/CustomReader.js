@@ -51,7 +51,7 @@ const Reader = (params) => {
         var slug = params.params
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        await axios.get(`https://dev.apps-foundry.com/scoopcor/api/v1/items/${Number(slug)}/web-reader/${index}.jpg`,
+        await axios.get(`${process.env.REACT_APP_BASE_URL}items/${Number(slug)}/web-reader/${index}.jpg`,
         { headers: { Authorization:Cookies.get('token')}, responseType: 'blob' }
       ).then((response)=>{
         let image = window.URL.createObjectURL(response.data)
@@ -207,13 +207,13 @@ const Reader = (params) => {
                             )}
                         </div>
                     </TransformComponent>
-                    <div>
+                    <div className="font-nunito">
                         {isLoading && <Loader />}
                     </div>
                     <div className="absolute bottom-0 top-4 sticky z-10 h-14 text-center dark:bg-gray-800 bg-white w-full py-2">
                         <div className="dark:text-white text-black py-2 flex justify-center spcae-x-2 w-auto">
                             <input type="text" className="focus:outline-none w-12 px-2 text-center text-black rounded-md mx-2" value={pageNumber} onChange={(e)=> changeValue(e.target.value)}/>
-                            <span>/ {TOTAL_PAGES}</span>
+                            <span className="font-nunito">/ {TOTAL_PAGES}</span>
                         </div>
                     </div>
                 </div>

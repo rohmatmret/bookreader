@@ -35,7 +35,7 @@ export default function Dashboard() {
         <input
           type="search"
           placeholder="Search"
-          className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-500 placeholder-opacity-50 rounded-full focus:outline-none"
+          className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-500 placeholder-opacity-50 rounded-full focus:outline-none font-nunito"
           onChange={(e) => {
             setSearchItems(e.target.value);
           }}

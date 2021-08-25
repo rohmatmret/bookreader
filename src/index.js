@@ -3,15 +3,15 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import LoginForm from "./components/LoginForm";
-import Reader from "./Reader";
+import LoginForm from "./pages/LoginForm";
+import Reader from "./pages/Reader";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Switch, Redirect, render } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Premium from "./pages/Premium";
 import { Provider } from "react-redux";
 import {store} from './store';
 import Cookies from 'js-cookie';
-import NotFound from './notfound';
+import NotFound from './pages/Notfound';
 
 const isAuthenticated = Cookies.get('token')
 
@@ -20,10 +20,11 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact component={LoginForm} />
-          <Route path={["/premium/:offerid"]} exact render={()=>isAuthenticated ? <Premium />: <Redirect to="/login"/>}/>
+          <Route path="/login" exact render={()=>isAuthenticated ? <Premium />: <LoginForm/>}/>
+          <Route path={["/premium"]} exact render={()=>isAuthenticated ? <Premium />: <Redirect to="/login"/>}/>
           <Route path={["/reader/:itemid"]} exact render={()=>isAuthenticated ? <Reader />: <Redirect to="/login"/>}/>
           <Route path={["/","/dashboard"]} exact render={()=>isAuthenticated ? <App />: <Redirect to="/login"/>}/>
+          <Route path="/404" component={NotFound}/>
           <Route component={NotFound}/>
         </Switch>
       </BrowserRouter>
