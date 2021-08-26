@@ -190,7 +190,7 @@ const Reader = (params) => {
                                                 "w-2/5 h-full bg-gray-300 mx-auto p-4 rounded mb-4 flex"
                                             }
                                         >
-                                            <img src={item} alt={index} className="w-full h-full mx-auto" onDragStart={(e)=>preventDrag(e)}/>
+                                            <img src={item} alt={index} srcSet={`${item} 2x`} className="w-full h-full mx-auto" onDragStart={(e)=>preventDrag(e)}/>
                                         </div>
                                     </Item>
                                 ):(

@@ -33,7 +33,8 @@ export default function PremiumOffers() {
               .indexOf(searchItems.toLowerCase()) !== -1
           );
         })
-      : "";
+      : 
+      ""
 
   useEffect(() => {
     OfferBuffets(paramsId);
@@ -75,20 +76,23 @@ export default function PremiumOffers() {
             <div className="flex grid lg:grid-cols-6 xl:grid-cols-5 lg:gap-0 xl:gap-6 md:grid-cols-3 md:gap-10 sm:grid-cols-3 grid-cols-1 gap-8 mx-14 sm:mx-auto">
               {!isLoading ? (
                 Items ? (
-                  filterBook.map((books) => {
-                    return (
-                      <CardItem
-                        image={books.images}
-                        title={books.name}
-                        author={books.author}
-                        offerId={books.id}
-                        url={books.images}
-                        key={books.id}
-                        pageCount={books.page_count}
-                        params={paramsId}
-                      />
-                    );
-                  })
+                  filterBook.length > 0 ?
+                    filterBook.map((books) => {
+                      return (
+                        <CardItem
+                          image={books.images}
+                          title={books.name}
+                          author={books.author}
+                          offerId={books.id}
+                          url={books.images}
+                          key={books.id}
+                          pageCount={books.page_count}
+                          params={paramsId}
+                        />
+                      );
+                    })
+                  :
+                  <div className="w-screen font-semibold font-nunito text-xl mt-12">Buku yang anda cari tidak ditemukan.</div>
                 ) : (
                   ""
                 )
