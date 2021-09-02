@@ -67,9 +67,9 @@ const SideMenu = () => {
               </div>
             </div>
             {/* Heading */}
-            <h6 className="md:min-w-full text-gray-900 text-base uppercase font-extrabold block pt-1 pb-4 no-underline font-nunito">
+            {/* <h6 className="md:min-w-full text-gray-900 text-base uppercase font-extrabold block pt-1 pb-4 no-underline font-nunito">
               Grasindo
-            </h6>
+            </h6> */}
             {/* Navigation */}
 
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
