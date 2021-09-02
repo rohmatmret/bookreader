@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import CustomReader from '../components/CustomReader';
+import IntellexReader from '../components/IntellexReader';
 
 function Reader() {
   const [slug, setSlug] = useState("");
@@ -14,7 +15,8 @@ function Reader() {
 
   return (
     <div  className="bg-white dark:bg-gray-700">
-      <CustomReader params={params.itemid}/>
+      {/* <CustomReader params={params.itemid}/> */}
+      <IntellexReader params={params.itemid}/>
     </div>
   );
 }
