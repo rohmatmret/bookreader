@@ -45,9 +45,9 @@ export default function PremiumOffers() {
       `https://dev.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
       { headers: { Authorization: Cookies.get("token") } }
     ).catch(err => {
-      // if(err){
-      //   window.location.href = "/404"
-      // }
+      if(err){
+        window.location.href = "/404"
+      }
     });
 
     if (Result) {
