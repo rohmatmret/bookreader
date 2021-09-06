@@ -50,8 +50,8 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
           </Link>
         </button>
       </div>
-       : ""
-      }
+        : ""
+        }
     </div>
   );
 };

@@ -105,7 +105,7 @@ const LoginForm = () => {
           <form className="mx-10 md:mx-40 space-y-4">
             <div className="flex flex-col space-y-1 border-b-2">
               <label htmlFor="email" className="font-nunito text-gray-600">
-                Email Address
+                Email
               </label>
               <input
                 type="email"
@@ -137,7 +137,7 @@ const LoginForm = () => {
             }
             <div className="text-sm text-blue-500 font-bold font-nunito">
               <a href="https://ebooks.gramedia.com/id/forgot">
-                Lupa kata sandi ?
+                Lupa Kata Sandi
               </a>
             </div>
             <div className="text-center">
@@ -164,8 +164,9 @@ const LoginForm = () => {
               <a
                 href="https://ebooks.gramedia.com/id/faq"
                 className="text-blue-500"
+                target="_blank"
               >
-                Hubungi Gramedia Digital Customer Service
+                Hubungi Customer Service Gramedia Digital
               </a>
             </p>
           </div>

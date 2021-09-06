@@ -14,7 +14,7 @@ const UserDropdown = () => {
   const getPackage = packageName ? getOffers(packageName) : "";
   const offerName = getPackage ? getPackage.map((item, index)=>{
     return (
-      <div className="flex ml-2">
+      <div className="flex ml-2 my-2">
         <img src={Diamond} alt="diamond-icon" className="w-5 h-5 mx-1 my-2" />
         <span className="block px-4 py-2 text-sm text-gray-700 float-right font-nunito">
           {item.name}
@@ -60,19 +60,12 @@ const UserDropdown = () => {
               aria-orientation="vertical"
               aria-labelledby="user-menu-button"
             >
-              {/* {packageName ?
-                <div className="flex ml-6">
-                  <img src={Diamond} alt="diamond-icon" className="w-5 h-5 mx-1 my-2" />
-                  <span className="block px-4 py-2 text-sm text-gray-700 float-right font-nunito">
-                    {packageName}
-                  </span>
-                </div>
-                :
-                ''
-              } */}
+              <div class="px-6 py-2 m-2 bg-blue-500 text-white rounded-md font-bold font-nunito">
+                Langganan
+              </div>
               {offerName}
-              
-              <button className="block px-5 py-2 text-sm text-gray-700 float-right underline" onClick={()=>handleLogout()}>
+              <hr className="mx-3 bg-gray-300 py-px rounded-md"/>
+              <button className="block px-5 py-2 text-sm text-gray-700 float-right underline font-nunito font-bold" onClick={()=>handleLogout()}>
                 Sign Out
               </button>
             </div>

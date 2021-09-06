@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import SideMenu from "../components/SideMenu";
 import axios from "axios";
 import Cookies from "js-cookie";
+import NotFound from '../assets/notfound.png';
 
 /**
  *
@@ -51,7 +52,6 @@ export default function PremiumOffers() {
     });
 
     if (Result) {
-        console.log(Result)
         setItems(Result.data);
         setLoading(false);
     }
@@ -93,7 +93,10 @@ export default function PremiumOffers() {
                       );
                     })
                   :
-                  <div className="w-screen font-semibold font-nunito text-xl mt-12">Buku yang anda cari tidak ditemukan.</div>
+                  <div className="w-screen">
+                    <div className="w-screen font-semibold font-nunito text-xl mt-12">Maaf, kami tidak menemukan apa yang anda cari</div>
+                    <img src={NotFound} alt="notfound-img" className="w-8/12 mx-20"/>
+                  </div>
                 ) : (
                   ""
                 )
