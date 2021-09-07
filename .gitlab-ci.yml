@@ -46,18 +46,18 @@ Production:
   variables:
     CLUSTERGCP: test
   stage: Production
-  image: registry.gitlab.com/gramedia-asri-media/ansible-gcp
-  #services:
-  #  - docker:dind
+  image: google/cloud-sdk
+  #image: registry.gitlab.com/gramedia-asri-media/ansible-gcp
+  services:
+    - docker:dind
   script:
-#    - sed -i "s/REACT_APP_BASE/$REACT_APP_BASE_URL_PROD/g" src/pages/LoginForm.js
-#    - sed -i "s/REACT_APP_BASE/$REACT_APP_BASE_URL_PROD/g" src/pages/Premium.js
-#    - sed -i "s/REACT_APP_BASE/$REACT_APP_BASE_URL_PROD/g" src/components/CustomReader.js
-#    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
-#    - gcloud auth activate-service-account --key-file gcloud-service-key.json
-#    - gcloud config set project $GCP_PROJECT_ID
-#    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
-    - ansible-playbook /root/webreader-staging.yml -i inventory
+
+    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - ansible-playbook /root/webreader-staging.yml
+    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
+
   #needs:
   #  - job: Sonarcloud
 #  when: manual
