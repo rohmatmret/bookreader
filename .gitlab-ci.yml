@@ -45,10 +45,11 @@ Staging:
 Production:
   variables:
     CLUSTERGCP: test
+    REACT_APP_BASE_URL_STAGING: $REACT_APP_BASE_URL_STAGING
   before_script:
     #- echo "$REACT_APP_BASE_URL_STAGING" | sed -i 's/REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING/g' src/pages/Premium.js | sed -i 's+REACT_APP_BASE_URL+$REACT_APP_BASE_URL_STAGING+g' src/pages/LoginForm.js
-#    - sed -i 's+REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING+g' src/components/CustomReader.js
-    - sed -i 's;REACT_APP_BASE_URL;$REACT_APP_BASE_URL_STAGING;g' src/pages/Premium.js"
+    - sed -i 's+REACT_APP_BASE_URL/"$REACT_APP_BASE_URL_STAGING"+g' src/components/CustomReader.js
+    #- echo $REACT_APP_BASE_URL_STAGING | sed -i 's+REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING+g' src/pages/Premium.js"
   stage: Production
   image: google/cloud-sdk
   #image: registry.gitlab.com/gramedia-asri-media/ansible-gcp
