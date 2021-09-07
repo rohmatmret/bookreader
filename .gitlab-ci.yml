@@ -52,7 +52,7 @@ Production:
   services:
     - docker:dind
   script:
-    - sed -i 's+REACT_APP_BASE_URL/"$REACT_APP_BASE_URL_STAGING"+g' src/components/CustomReader.js
+    - sed -i 's+REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGINGIN+g' src/components/CustomReader.js
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
