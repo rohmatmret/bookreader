@@ -45,18 +45,14 @@ Staging:
 Production:
   variables:
     CLUSTERGCP: test
-    REACT_APP_BASE_URL_STAGING: $REACT_APP_BASE_URL_STAGING
-  before_script:
-    #- echo "$REACT_APP_BASE_URL_STAGING" | sed -i 's/REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING/g' src/pages/Premium.js | sed -i 's+REACT_APP_BASE_URL+$REACT_APP_BASE_URL_STAGING+g' src/pages/LoginForm.js
-    - sed -i 's+REACT_APP_BASE_URL/"$REACT_APP_BASE_URL_STAGING"+g' src/components/CustomReader.js
-    #- echo $REACT_APP_BASE_URL_STAGING | sed -i 's+REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING+g' src/pages/Premium.js"
+    REACT_APP_BASE_URL_STAGINGIN: $REACT_APP_BASE_URL_STAGING
   stage: Production
   image: google/cloud-sdk
   #image: registry.gitlab.com/gramedia-asri-media/ansible-gcp
   services:
     - docker:dind
   script:
-
+    - sed -i 's+REACT_APP_BASE_URL/"$REACT_APP_BASE_URL_STAGING"+g' src/components/CustomReader.js
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
