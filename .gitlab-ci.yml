@@ -1,16 +1,13 @@
----
 stages:
   #- Sonarcloud
   - Staging
-  #- Production
+  - Production
 
 Staging:
   variables:
     CLUSTERGCP: test
-    REACT_APP_BASE_URL_STAGING: $REACT_APP_BASE_URL_STAGING
   before_script:
-    - sed -i 's/REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING/g' src/pages/Premium.js
-    - sed -i 's+REACT_APP_BASE_URL+$REACT_APP_BASE_URL_STAGING+g' src/pages/LoginForm.js
+    - echo "$REACT_APP_BASE_URL_STAGING" | sed -i 's/REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING/g' src/pages/Premium.js | sed -i 's+REACT_APP_BASE_URL+$REACT_APP_BASE_URL_STAGING+g' src/pages/LoginForm.js
 #    - sed -i 's+REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGING+g' src/components/CustomReader.js
   stage: Staging
   image: google/cloud-sdk
@@ -45,14 +42,14 @@ Staging:
 #    - merge_requests
 #    - master
 
-#Production:
-#  variables:
-#    CLUSTERGCP: gramedia-production
-#  stage: Production
-#  image: google/cloud-sdk
-#  services:
-#    - docker:dind
-#  script:
+Production:
+  variables:
+    CLUSTERGCP: test
+  stage: Production
+  image: registry.gitlab.com/gramedia-asri-media/ansible-gcp
+  #services:
+  #  - docker:dind
+  script:
 #    - sed -i "s/REACT_APP_BASE/$REACT_APP_BASE_URL_PROD/g" src/pages/LoginForm.js
 #    - sed -i "s/REACT_APP_BASE/$REACT_APP_BASE_URL_PROD/g" src/pages/Premium.js
 #    - sed -i "s/REACT_APP_BASE/$REACT_APP_BASE_URL_PROD/g" src/components/CustomReader.js
@@ -60,8 +57,9 @@ Staging:
 #    - gcloud auth activate-service-account --key-file gcloud-service-key.json
 #    - gcloud config set project $GCP_PROJECT_ID
 #    - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME,_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP
-#  needs:
-#    - job: Sonarcloud
+    - ansible-playbook /root/webreader-staging.yml -i inventory
+  #needs:
+  #  - job: Sonarcloud
 #  when: manual
-#  only:
-#    - /^release/.*$/i
+  only:
+    - feature/env-prod
