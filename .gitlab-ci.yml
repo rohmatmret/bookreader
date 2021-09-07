@@ -52,13 +52,13 @@ Production:
   services:
     - docker:dind
   script:
-    - sed -i "s|REACT_APP_BASE_URL|$REACT_APP_BASE_URL_STAGING|g" src/pages/Premium.js
+    - sed -i "s|REACT_APP_BASE_URL+'|$REACT_APP_BASE_URL_STAGING|g" src/pages/Premium.js
     #- sed -i 's+REACT_APP_BASE_URL/$REACT_APP_BASE_URL_STAGINGIN+g' src/components/CustomReader.js
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP,_CI_COMMIT_SHA=$CI_COMMIT_SHA
-
+ 
   #needs:
   #  - job: Sonarcloud
 #  when: manual
