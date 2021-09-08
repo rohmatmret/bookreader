@@ -16,7 +16,7 @@ Staging:
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit --config=cloudbuild.yml --substitutions=_CI_PROJECT_TITLE=$CI_PROJECT_TITLE,_CLUSTERIN=$CLUSTERGCP,_CI_COMMIT_SHA=$CI_COMMIT_SHA
   only:
-    - feature/env-prod
+    - /^release/.*$/i
 
 
 #Sonarcloud:
@@ -41,7 +41,7 @@ Staging:
 
 Production:
   variables:
-    CLUSTERGCP: test
+    CLUSTERGCP: gramediadigital-production
     REACT_APP_BASE_URL_STAGINGIN: $REACT_APP_BASE_URL_STAGING
   stage: Production
   image: google/cloud-sdk
@@ -57,4 +57,4 @@ Production:
   #  - job: Sonarcloud
 #  when: manual
   only:
-    - /^release/.*$/i
+    - feature/env-prod
