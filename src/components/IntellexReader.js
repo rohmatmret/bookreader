@@ -12,7 +12,7 @@ const ExampleReactPDF = (params) => {
     const fetchData = async (params) => {
         var slug = params.params
         // var slug = params
-        let Result = await axios.get(`https://scoopadm.apps-foundry.com/scoopcor/api/v1/${Number(slug)}/ebook-reader/view`,{ headers: { Authorization:Cookies.get('token')}})
+        let Result = await axios.get(`https://scoopadm.apps-foundry.com/scoopcor/api/v1/items/${Number(slug)}/ebook-reader/view`,{ headers: { Authorization:Cookies.get('token')}})
     
         if(Result){
             var data = Result.data
