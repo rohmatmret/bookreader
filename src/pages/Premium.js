@@ -43,7 +43,7 @@ export default function PremiumOffers() {
 
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
-      `https://dev.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
+      `https://scoopadm.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
       { headers: { Authorization: Cookies.get("token") } }
     ).catch(err => {
       if(err){
