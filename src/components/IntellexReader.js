@@ -35,7 +35,7 @@ const ExampleReactPDF = (params) => {
         <div>
             <div>
             <div className="text-black absolute left-1/3 top-2/3 opacity-10 font-nunito z-50 text-3xl font-bold transform rotate-45">
-                {Cookies.get('email')}/{day}{month}{year}/GDWR
+                {Cookies.get('email')}/{day}{month}{year}/GDWR 
             </div>
             <div className="bg-white min-h-14 dark:bg-gray-800 space-x-10 grid grid-cols-3 items-center sticky top-0 z-50">
                     <div className="px-12 text-black dark:text-white flex">
