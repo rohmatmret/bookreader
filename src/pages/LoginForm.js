@@ -81,6 +81,7 @@ const LoginForm = () => {
         setState(FormLogin);
         Cookies.set("token", res.data.realm + " " + res.data.token);
         Cookies.set("username", res.data.first_name);
+        Cookies.set("email", res.data.email)
         ownedBuffet();
       })
       .catch((err) => {
