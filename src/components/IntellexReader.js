@@ -16,7 +16,7 @@ const ExampleReactPDF = (params) => {
     
         if(Result){
             var data = Result.data
-            var urlNew = data.base_url + data.path + "?AWSAccessKeyId=" + data.access_key +"&Expires="+data.expires + "&Signature=" + data.signature
+            var urlNew = data.base_url + data.path + "?AWSAccessKeyId=" + data.access_key +"&Expires="+data.expires + "&Signature=" + encodeURIComponent(data.signature)
             setUrlData(urlNew);
             console.log(urlData)
         }

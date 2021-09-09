@@ -25,7 +25,14 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
   return (
     <div className="container w-48 shadow-lg p-2 rounded-md bg-white lg:my-2 xl:my-auto">
       <div className="w-11/12 mx-auto mb-4 shadow">
-        <img src={image} alt={title} className="rounded" />
+        {offerIds.includes(Number(params)) ?
+          <Link
+            to={"/reader/" + offerId}
+          >
+            <img src={image} alt={title} className="rounded" />
+          </Link>
+        : <img src={image} alt={title} className="rounded" />
+        }
       </div>
       <div className="space-y-4">
         <a href={url} rel="noreferrer" target="_blank">
@@ -36,13 +43,13 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
         <span className="text-xs text-gray-500 font-nunito">{author}</span>
       </div>
       {offerIds.includes(Number(params)) ?
-      <div className="mx-auto text-center bg-blue-500 rounded-md py-1 px-2 flex grid grid-cols-2 gap-0">
+      <div className="mx-auto text-center bg-blue-500 rounded-md py-1 px-2">
+        <button className="text-white font-bold text-left flex grid grid-cols-2 gap-0 mx-auto font-nunito" onClick={(e)=>{handleStorePageCount()}}>
         <img
           src={Icon}
           alt="icon-button"
           className="text-white h-6 my-auto ml-auto mr-4"
         />
-        <button className="text-white font-bold text-left font-nunito" onClick={(e)=>{handleStorePageCount()}}>
         <Link
             to={"/reader/" + offerId}
           >
