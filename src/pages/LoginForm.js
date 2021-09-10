@@ -94,7 +94,7 @@ const LoginForm = () => {
   };
 
   const handleSSOMyValue = () => {
-    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=https://staging-baca.gramedia.com/authorize&state=abc`)
+    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=http://localhost:3000/authorized&state=abc`)
   }
 
   return (
