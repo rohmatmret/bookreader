@@ -23,11 +23,9 @@ const ExampleReactPDF = (params) => {
             var data = Result.data
             var urlNew = data.base_url + data.path + "?AWSAccessKeyId=" + data.access_key +"&Expires="+data.expires + "&Signature=" + encodeURIComponent(data.signature)
             setUrlData(urlNew);
-            console.log(urlData)
         }
     }
     useEffect(()=>{
-        console.log(params);
         fetchData(params)
     },[])
 

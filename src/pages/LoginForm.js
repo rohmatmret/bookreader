@@ -6,6 +6,7 @@ import { RefreshIcon } from "@heroicons/react/outline";
 import Cookies from "js-cookie";
 import { setOffer } from "../rootSlice";
 import {useDispatch} from 'react-redux';
+import LogoMyValue from '../assets/myvalue.png';
 const sha1 = require("js-sha1");
 
 require("dotenv").config();
@@ -92,6 +93,10 @@ const LoginForm = () => {
       });
   };
 
+  const handleSSOMyValue = () => {
+    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=https://staging-baca.gramedia.com/authorize&state=abc`)
+  }
+
   return (
     <div className="lg:grid lg:grid-cols-2 lg:gap-10">
       <div className="hidden lg:block">
@@ -145,8 +150,8 @@ const LoginForm = () => {
               <button
                 className={
                   state.username && state.password
-                    ? "bg-blue-500 px-20 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto font-nunito"
-                    : "bg-gray-100 px-20 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold font-nunito"
+                    ? "bg-blue-500 px-24 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto font-nunito"
+                    : "bg-gray-100 px-24 py-2 mt-10 md:mt-24 rounded-md text-gray-500 font-bold font-nunito"
                 }
                 onClick={handleSubmit}
               >
@@ -159,6 +164,15 @@ const LoginForm = () => {
               </button>
             </div>
           </form>
+          <div className="text-center my-4">
+            atau masuk dengan
+          </div>
+          <div className="text-center my-4">
+            <button className="shadow shadow-md px-6 py-2 flex mx-auto rounded-md text-gray-700" onClick={handleSSOMyValue}>
+              <img src={LogoMyValue} alt="my-value" />
+              Masuk dengan MyValue
+            </button>
+          </div>
           <div className="mx-10 md:mx-40 mt-40">
             <p className="text-center text-sm sm:text-normal font-nunito font-bold">
               Butuh bantuan ?{" "}
@@ -166,6 +180,7 @@ const LoginForm = () => {
                 href="https://ebooks.gramedia.com/id/faq"
                 className="text-blue-500"
                 target="_blank"
+                rel="noreferrer"
               >
                 Hubungi Customer Service Gramedia Digital
               </a>
