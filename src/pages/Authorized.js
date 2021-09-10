@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import axios from 'axios';
 
 const Authorized = () => {
+    const [accessToken, setAccessToken] = useState();
     function useQuery() {
         return new URLSearchParams(useLocation().search);
     }
@@ -18,13 +19,23 @@ const Authorized = () => {
             "redirect_uri": "http://localhost:3000/authorized"
         }
         axios.post('https://auth.ovaltech.id/auth/token',payload, {headers: {'content-type': 'application/json'}})
+        .then(response => {
+            var data = response.data
+            getUserAPI(data.access_token);
+        })
+        .catch(err => console.log(err))
+    }
+
+    let getUserAPI = async(token) => {
+        let payloadData = token ? token : "";
+        axios.post('http://localhost/auth/valid', payloadData)
         .then(response => console.log(response))
         .catch(err => console.log(err))
     }
 
     useEffect(() => {
         changeToken(params);
-    },[params])
+    },[])
     return(
         <div>
            {/* {encodeURIComponent(params)} */}
