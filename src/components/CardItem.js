@@ -7,7 +7,7 @@ import { setPageCount, setTitle } from "../rootSlice";
 
 
 
-const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
+const CardItem = ({ image, title, author,offerId, url, pageCount, params, modal }) => {
   const dispatch = useDispatch();
   const offerBuffet = Cookies.get('offer') != null ? Cookies.get('offer') : "";
   const getPackage = offerBuffet !== "" ? JSON.parse(offerBuffet) : "";
@@ -22,6 +22,10 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
     dispatch(setTitle(title))
   }
 
+  const showModal = () => {
+    modal();
+  }
+
   return (
     <div className="container w-48 shadow-lg p-2 rounded-md bg-white lg:my-2 xl:my-auto">
       <div className="w-11/12 mx-auto mb-4 shadow">
@@ -31,13 +35,13 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params }) => {
           >
             <img src={image} alt={title} className="rounded" />
           </Link>
-        : <img src={image} alt={title} className="rounded" />
+        : <img src={image} alt={title} className="rounded cursor-pointer" onClick={showModal}/>
         }
       </div>
-      <div className="space-y-4">
-        <a href={url} rel="noreferrer" target="_blank">
+      <div className="space-y-4 cursor-pointer" onClick={offerIds.includes(Number(params)) ? "" :showModal}>
+        {/* <a href={url} rel="noreferrer" target="_blank"> */}
           <h3 className="text-sm font-bold font-nunito h-20">{title.substr(0)}</h3>
-        </a>
+        {/* </a> */}
       </div>
       <div className="mb-6">
         <span className="text-xs text-gray-500 font-nunito">{author}</span>

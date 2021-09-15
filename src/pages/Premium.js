@@ -7,6 +7,8 @@ import SideMenu from "../components/SideMenu";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NotFound from '../assets/notfound.png';
+import ModalComponent from '../components/Modal'
+import { param } from "jquery";
 
 /**
  *
@@ -16,7 +18,8 @@ export default function PremiumOffers() {
   const [isLoading, setLoading] = useState(true);
   const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
-  const offerId = useSelector((state) => state.offer)
+  const offerId = useSelector((state) => state.offer);
+  const [modalShown, toggleModal] = useState(false);
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -43,7 +46,7 @@ export default function PremiumOffers() {
 
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
-      `https://scoopadm.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
+      process.env.REACT_APP_BASE_URL + `offers/items?offer_id=${id}&item_type=2`,
       { headers: { Authorization: Cookies.get("token") } }
     ).catch(err => {
       if(err){
@@ -56,6 +59,10 @@ export default function PremiumOffers() {
         setLoading(false);
     }
   };
+
+  const showModal = () => {
+    toggleModal(!modalShown)
+  }
 
   return (
     <>
@@ -89,6 +96,7 @@ export default function PremiumOffers() {
                           key={books.id}
                           pageCount={books.page_count}
                           params={paramsId}
+                          modal={showModal}
                         />
                       );
                     })
@@ -106,6 +114,15 @@ export default function PremiumOffers() {
             </div>
           </div>
         </div>
+        <ModalComponent
+          shown={modalShown}
+          close={()=>{toggleModal(false)}}
+          id={paramsId}
+        >
+          <div>Anda belum berlangganan paket ini.</div> 
+          Untuk dapat menikmati layanan, silahkan melakukan pembelian paket di 
+          halaman Gramedia Digital.
+        </ModalComponent>
       </div>
     </>
   );
