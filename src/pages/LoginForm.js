@@ -164,15 +164,6 @@ const LoginForm = () => {
               </button>
             </div>
           </form>
-          <div className="text-center my-4">
-            atau masuk dengan
-          </div>
-          <div className="text-center my-4">
-            <button className="shadow shadow-md px-6 py-2 flex mx-auto rounded-md text-gray-700" onClick={handleSSOMyValue}>
-              <img src={LogoMyValue} alt="my-value" />
-              Masuk dengan MyValue
-            </button>
-          </div>
           <div className="mx-10 md:mx-40 mt-40">
             <p className="text-center text-sm sm:text-normal font-nunito font-bold">
               Butuh bantuan ?{" "}
