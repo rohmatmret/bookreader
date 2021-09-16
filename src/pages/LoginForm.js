@@ -30,7 +30,7 @@ const LoginForm = () => {
   };
 
   const ownedBuffet = () => {
-    axios.get(process.env.REACT_APP_BASE_URL + "owned_buffets",{
+    axios.get(process.env.REACT_APP_BASE_URL+"owned_buffets",{
       headers: {Authorization:Cookies.get('token')}
     })
     .then((res)=>{
@@ -77,7 +77,7 @@ const LoginForm = () => {
     };
 
     axios
-      .post(process.env.REACT_APP_BASE_URL + "auth/login", data)
+      .post(process.env.REACT_APP_BASE_URL+"auth/login", data)
       .then((res) => {
         setState(FormLogin);
         Cookies.set("token", res.data.realm + " " + res.data.token);

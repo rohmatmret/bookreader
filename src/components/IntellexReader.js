@@ -19,7 +19,7 @@ const ExampleReactPDF = (params) => {
     const fetchData = async (params) => {
         var slug = params.params
         // var slug = params
-        let Result = await axios.get(process.env.REACT_APP_BASE_URL + `items/${Number(slug)}/ebook-reader/view`,{ headers: { Authorization:Cookies.get('token')}})
+        let Result = await axios.get(process.env.REACT_APP_BASE_URL+'items/${Number(slug)}/ebook-reader/view',{ headers: { Authorization:Cookies.get('token')}})
     
         if(Result){
             var data = Result.data
