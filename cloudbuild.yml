@@ -8,6 +8,6 @@ steps:
   - run
   - --filename=deployment.yml
   - --image=gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_SHA
-  - --location=asia-southeast1
+  - --location=$_LOCATIONCLUSTER
   - --cluster=$_CLUSTERIN
 images: ['gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:$_CI_COMMIT_SHA']
