@@ -6,7 +6,7 @@ stages:
 Staging:
   variables:
     CLUSTERGCP: test
-    LOCATION: asia-southeast1
+    LOCATION: asia-southeast2-a
   stage: Staging
   image: google/cloud-sdk
   services:
@@ -43,7 +43,7 @@ Staging:
 Production:
   variables:
     CLUSTERGCP: gramediadigital-production
-    LOCATION: asia-southeast2-a
+    LOCATION: asia-southeast1
   stage: Production
   image: google/cloud-sdk
   services:
