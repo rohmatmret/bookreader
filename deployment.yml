@@ -50,3 +50,12 @@ spec:
 #        image: gcr.io/gramedia-com-319204/gramediacom-gm-fe:master
 #        ports:
 #        - containerPort: 3000
+---
+apiVersion: v1
+kind: FrontendConfig
+metadata:
+  name: gramediacom-gm-fe
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: 301
