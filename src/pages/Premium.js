@@ -42,6 +42,7 @@ export default function PremiumOffers() {
 
   useEffect(() => {
     OfferBuffets(paramsId);
+    setSearchItems("");
   }, [paramsId]);
 
   const OfferBuffets = async (id) => {
@@ -64,6 +65,13 @@ export default function PremiumOffers() {
     toggleModal(!modalShown)
   }
 
+  const handlePressEnter = (e) => {
+    if(e.key === "Enter") {
+      e.preventDefault()
+      setSearchItems(e.target.value)
+    }
+  }
+
   return (
     <>
       <SideMenu />
@@ -76,8 +84,12 @@ export default function PremiumOffers() {
                 type="search"
                 placeholder="Search"
                 className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-400 placeholder-opacity-50 rounded-full focus:outline-none font-nunito"
+                value={searchItems}
                 onChange={(e) => {
                   setSearchItems(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  handlePressEnter(e);
                 }}
               />
             </form>
@@ -102,7 +114,7 @@ export default function PremiumOffers() {
                     })
                   :
                   <div className="w-screen">
-                    <div className="w-screen font-semibold font-nunito text-xl mt-12">Maaf, kami tidak menemukan apa yang anda cari</div>
+                    <div className="w-10/12 font-semibold text-center font-nunito text-xl mt-12">Maaf, kami tidak menemukan apa yang anda cari</div>
                     <img src={NotFound} alt="notfound-img" className="w-8/12 mx-20"/>
                   </div>
                 ) : (
