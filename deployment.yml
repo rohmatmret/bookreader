@@ -16,46 +16,17 @@ spec:
           image: gcr.io/gramedia-digital-5a7c5/revamp-web-reader:master
           ports:
           - containerPort: 3000
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: lb-revamp-web-reader
-#spec:
-#  ports:
-#  - port: 80
-#    targetPort: 3000
-#    protocol: TCP
-#    name: http
-#  selector:
-#    app: revamp-web-reader
-#  type: NodePort
-#---
-#apiVersion: v1
-#kind: ReplicationController
-#metadata:
-#  name: gramediacom-gm-fe
-#spec:
-#  replicas: 1
-#  selector:
-#    app: gramediacom-gm-fe
-#  template:
-#    metadata:
-#      name: gramediacom-gm-fe
-#      labels:
-#        app: gramediacom-gm-fe
-#    spec:
-#      containers:
-#      - name: gramediacom-gm-fe
-#        image: gcr.io/gramedia-com-319204/gramediacom-gm-fe:master
-#        ports:
-#        - containerPort: 3000
 ---
 apiVersion: v1
-kind: FrontendConfig
+kind: Service
 metadata:
-  name: gramediacom-gm-fe
+  name: lb-revamp-web-reader
 spec:
-  redirectToHttps:
-    enabled: true
-    responseCodeName: 301
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: revamp-web-reader
+  type: NodePort
