@@ -13,7 +13,6 @@ Staging:
     - docker:dind
   script:
     - cat $VARSSTAG > .env
-    - npm run start
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
@@ -51,7 +50,7 @@ Production:
     - docker:dind
   script:
     - cat $VARSPROD > .env
-    - npm run build
+    - sed -i "s|start|build|g" Dockerfile
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
