@@ -13,6 +13,7 @@ Staging:
     - docker:dind
   script:
     - cat $VARSSTAG > .env
+    - sed -i "s|master|$CI_COMMIT_SHA|g" Dockerfile
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
@@ -50,7 +51,7 @@ Production:
     - docker:dind
   script:
     - cat $VARSPROD > .env
-    - sed -i "s|start|build|g" Dockerfile
+    - sed -i "s|master|$CI_COMMIT_SHA|g" Dockerfile
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
