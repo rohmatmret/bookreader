@@ -10,4 +10,4 @@ steps:
   - --image=gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:staging
   - --location=$_LOCATIONCLUSTER
   - --cluster=$_CLUSTERIN
-images: ['gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:'staging']
+images: ['gcr.io/$PROJECT_ID/$_CI_PROJECT_TITLE:staging']
