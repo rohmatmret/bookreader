@@ -13,7 +13,7 @@ Staging:
   script:
     - cat $VARSSTAG > .env
     - sed -i "s|master|$CI_COMMIT_SHA|g" Dockerfile
-    - sed -i "s|$_CI_COMMIT_SHA|staging" cloudbuild.yml
+    - sed -i "s|$_CI_COMMIT_SHA|staging|g" cloudbuild.yml
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
