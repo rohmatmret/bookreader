@@ -44,5 +44,12 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script src="https://your-cdn-host.com/path/to/elastic-apm-rum.umd.min.js" crossorigin></script>
+    <script>
+          elasticApm.init({
+            serviceName: 'webreader',
+            serverUrl: 'http://localhost:3000',
+          })
+    </script>
   </body>
 </html>
