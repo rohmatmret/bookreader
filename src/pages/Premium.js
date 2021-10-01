@@ -7,6 +7,8 @@ import SideMenu from "../components/SideMenu";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NotFound from '../assets/notfound.png';
+import ModalComponent from '../components/Modal'
+import { param } from "jquery";
 
 /**
  *
@@ -16,7 +18,8 @@ export default function PremiumOffers() {
   const [isLoading, setLoading] = useState(true);
   const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
-  const offerId = useSelector((state) => state.offer)
+  const offerId = useSelector((state) => state.offer);
+  const [modalShown, toggleModal] = useState(false);
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -39,11 +42,12 @@ export default function PremiumOffers() {
 
   useEffect(() => {
     OfferBuffets(paramsId);
+    setSearchItems("");
   }, [paramsId]);
 
   const OfferBuffets = async (id) => {
     let Result = await axios.get(
-      `https://scoopadm.apps-foundry.com/scoopcor/api/v1/offers/items?offer_id=${id}&item_type=2`,
+      process.env.REACT_APP_BASE_URL+`offers/items?offer_id=${id}&item_type=2`,
       { headers: { Authorization: Cookies.get("token") } }
     ).catch(err => {
       if(err){
@@ -57,6 +61,17 @@ export default function PremiumOffers() {
     }
   };
 
+  const showModal = () => {
+    toggleModal(!modalShown)
+  }
+
+  const handlePressEnter = (e) => {
+    if(e.key === "Enter") {
+      e.preventDefault()
+      setSearchItems(e.target.value)
+    }
+  }
+
   return (
     <>
       <SideMenu />
@@ -69,8 +84,12 @@ export default function PremiumOffers() {
                 type="search"
                 placeholder="Search"
                 className="px-5 bg-gray-100 p-2 w-80 placeholder-gray-400 placeholder-opacity-50 rounded-full focus:outline-none font-nunito"
+                value={searchItems}
                 onChange={(e) => {
                   setSearchItems(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  handlePressEnter(e);
                 }}
               />
             </form>
@@ -89,12 +108,13 @@ export default function PremiumOffers() {
                           key={books.id}
                           pageCount={books.page_count}
                           params={paramsId}
+                          modal={showModal}
                         />
                       );
                     })
                   :
                   <div className="w-screen">
-                    <div className="w-screen font-semibold font-nunito text-xl mt-12">Maaf, kami tidak menemukan apa yang anda cari</div>
+                    <div className="w-10/12 font-semibold text-center font-nunito text-xl mt-12">Maaf, kami tidak menemukan apa yang anda cari</div>
                     <img src={NotFound} alt="notfound-img" className="w-8/12 mx-20"/>
                   </div>
                 ) : (
@@ -106,6 +126,15 @@ export default function PremiumOffers() {
             </div>
           </div>
         </div>
+        <ModalComponent
+          shown={modalShown}
+          close={()=>{toggleModal(false)}}
+          id={paramsId}
+        >
+          <div>Anda belum berlangganan paket ini.</div> 
+          Untuk dapat menikmati layanan, silahkan melakukan pembelian paket di 
+          halaman Gramedia Digital.
+        </ModalComponent>
       </div>
     </>
   );

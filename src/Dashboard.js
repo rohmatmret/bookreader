@@ -26,7 +26,6 @@ export default function Dashboard() {
 
     if (Result) {
       setItems(Result.data);
-      console.log(Items);
     }
   };
   return (

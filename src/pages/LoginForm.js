@@ -20,7 +20,7 @@ const LoginForm = () => {
   const [state, setState] = useState(FormLogin);
   const [loading, setLoading] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
-  const secretPassword = "5gvi-ojhgf%^&YGBNeds1{";
+  const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
   const dispatch = useDispatch();
 
   const HashPassword = (password) => {
@@ -30,7 +30,7 @@ const LoginForm = () => {
   };
 
   const ownedBuffet = () => {
-    axios.get("https://scoopadm.apps-foundry.com/scoopcor/api/v1/owned_buffets",{
+    axios.get(process.env.REACT_APP_BASE_URL+"owned_buffets",{
       headers: {Authorization:Cookies.get('token')}
     })
     .then((res)=>{
@@ -77,7 +77,7 @@ const LoginForm = () => {
     };
 
     axios
-      .post("https://scoopadm.apps-foundry.com/scoopcor/api/v1/auth/login", data)
+      .post(process.env.REACT_APP_BASE_URL+"auth/login", data)
       .then((res) => {
         setState(FormLogin);
         Cookies.set("token", res.data.realm + " " + res.data.token);
@@ -164,15 +164,6 @@ const LoginForm = () => {
               </button>
             </div>
           </form>
-          <div className="text-center my-4">
-            atau masuk dengan
-          </div>
-          <div className="text-center my-4">
-            <button className="shadow shadow-md px-6 py-2 flex mx-auto rounded-md text-gray-700" onClick={handleSSOMyValue}>
-              <img src={LogoMyValue} alt="my-value" />
-              Masuk dengan MyValue
-            </button>
-          </div>
           <div className="mx-10 md:mx-40 mt-40">
             <p className="text-center text-sm sm:text-normal font-nunito font-bold">
               Butuh bantuan ?{" "}
