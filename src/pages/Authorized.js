@@ -17,7 +17,7 @@ const Authorized = () => {
             "client_id": "EbooksGramedia",
             "client_secret": "df4d91e0-c25a-432d-8945-20497eb8e5dc",
             "code": params ? params.get('code') : params,
-            "redirect_uri": "http://localhost:3000/authorized"
+            "redirect_uri": "https://staging-baca.gramedia.com/authorized"
         }
         axios.post('https://auth.ovaltech.id/auth/token',payload, {headers: {'content-type': 'application/json'}})
         .then(response => {
@@ -73,10 +73,10 @@ const Authorized = () => {
             // var offerVar = setOffer(JSON.stringify(offer));
             // dispatch(JSON.parse(offerVar));
             // setLoading(false);
-            window.location.href = "/dashboard";
+            // window.location.href = "/dashboard";
           }else{
             // setLoading(false);
-            window.location.href = "/dashboard";
+            // window.location.href = "/dashboard";
           }
         })
         .catch((err) => {
@@ -92,7 +92,8 @@ const Authorized = () => {
     return(
         <div>
            {/* {encodeURIComponent(params)} */}
-           {params?params.get('code') : params}
+           {/* {params?params.get('code') : params} */}
+           Loading...
         </div>
     )
 }
