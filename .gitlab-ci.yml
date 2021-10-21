@@ -30,6 +30,7 @@ Production:
   script:
     - cat $VARSPROD > .env
     - sed -i 's|staging|$_CI_COMMIT_SHA|g' cloudbuild.yml
+    - sed -i 's|staging|$_CI_COMMIT_SHA|g' deployment.yml
     - echo $GCP_SERVICE_KEY > gcloud-service-key.json
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
