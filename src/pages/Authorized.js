@@ -73,10 +73,10 @@ const Authorized = () => {
             // var offerVar = setOffer(JSON.stringify(offer));
             // dispatch(JSON.parse(offerVar));
             // setLoading(false);
-            // window.location.href = "/dashboard";
+            window.location.href = "/dashboard";
           }else{
             // setLoading(false);
-            // window.location.href = "/dashboard";
+            window.location.href = "/dashboard";
           }
         })
         .catch((err) => {
