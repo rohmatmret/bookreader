@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CardItem from "../components/CardItem";
-import { useParams, useLocation } from "react-router-dom";
-import {useSelector} from 'react-redux';
+import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import SideMenu from "../components/SideMenu";
 import axios from "axios";
 import Cookies from "js-cookie";
 import NotFound from '../assets/notfound.png';
 import ModalComponent from '../components/Modal'
-import { param } from "jquery";
 
 /**
  *
@@ -18,7 +16,6 @@ export default function PremiumOffers() {
   const [isLoading, setLoading] = useState(true);
   const [searchItems, setSearchItems] = useState("");
   const [Items, setItems] = useState("");
-  const offerId = useSelector((state) => state.offer);
   const [modalShown, toggleModal] = useState(false);
 
   function useQuery() {
@@ -93,7 +90,7 @@ export default function PremiumOffers() {
                 }}
               />
             </form>
-            <div className="flex grid lg:grid-cols-6 xl:grid-cols-5 lg:gap-0 xl:gap-6 md:grid-cols-3 md:gap-10 sm:grid-cols-3 grid-cols-1 gap-8 mx-14 sm:mx-auto">
+            <div className="flex lg:grid-cols-6 xl:grid-cols-5 lg:gap-0 xl:gap-6 md:grid-cols-3 md:gap-10 sm:grid-cols-3 grid-cols-1 gap-8 mx-14 sm:mx-auto">
               {!isLoading ? (
                 Items ? (
                   filterBook.length > 0 ?

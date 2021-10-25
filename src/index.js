@@ -13,6 +13,7 @@ import {store} from './store';
 import Cookies from 'js-cookie';
 import NotFound from './pages/Notfound';
 import Authorized from "./pages/Authorized";
+import SetPasswordPage from "./pages/SetPassword";
 
 const isAuthenticated = Cookies.get('token')
 
@@ -25,9 +26,8 @@ ReactDOM.render(
           <Route path={["/premium"]} exact render={()=>isAuthenticated ? <Premium />: <Redirect to="/login"/>}/>
           <Route path={["/reader/:itemid"]} exact render={()=>isAuthenticated ? <Reader />: <Redirect to="/login"/>}/>
           <Route path={["/","/dashboard"]} exact render={()=>isAuthenticated ? <App />: <Redirect to="/login"/>}/>
-          <Route path={["/authorized"]} exact>
-          <Authorized/>
-          </Route>
+          <Route path={["/set-password"]} exact render={()=><SetPasswordPage/>}/>
+          <Route path={["/authorized"]} exact render={() => <Authorized/>}/>
           <Route path="/404" component={NotFound}/>
           <Route component={NotFound}/>
         </Switch>

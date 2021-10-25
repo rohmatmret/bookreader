@@ -1,4 +1,5 @@
-import React,{useState, useCallback, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React,{useState, useEffect } from 'react';
 import ReactPDF from '@intelllex/react-pdf';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
@@ -18,7 +19,6 @@ const ExampleReactPDF = (params) => {
 
     const fetchData = async (params) => {
         var slug = params.params
-        // var slug = params
         let Result = await axios.get(process.env.REACT_APP_BASE_URL+`items/${Number(slug)}/ebook-reader/view`,{ headers: { Authorization:Cookies.get('token')}})
     
         if(Result){
