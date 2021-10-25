@@ -1,7 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: revamp-web-reader
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+    ingress.kubernetes.io/enable-cors: "true"
+    ingress.kubernetes.io/cors-allow-origin: "*"
+    cloud.google.com/backend-config: '{"default": "be-revamp-web-reader"}'
+spec:
+  ports:
+  - port: 443
+    targetPort: 3000
+    protocol: TCP
+    name: https
+  selector:
+    app: revamp-web-reader
+  type: ClusterIP
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: revamp-web-reader
+  labels:
+    app: revamp-web-reader
 spec:
   selector:
     matchLabels:
@@ -12,7 +35,70 @@ spec:
         app: revamp-web-reader
     spec:
       containers:
-        - name: server
+        - name: revamp-web-reader
           image: gcr.io/gramedia-digital-5a7c5/revamp-web-reader:staging
           ports:
-          - containerPort: 3000
+            - containerPort: 3000
+---
+
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: be-revamp-web-reader
+spec:
+  healthCheck:
+    port: 3000
+    type: HTTP
+    requestPath: /
+    checkIntervalSec: 15
+---
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: revamp-web-reader-ingress
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  defaultBackend:
+    service:
+      name: revamp-web-reader
+      port:
+        number: 443
+  #here where we mapped the tls cert from kubernetes secret
+  tls:
+  - secretName: ssl-revamp-web-reader
+  rules:
+  - host: staging-baca.gramedia.com
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific  
+        backend:
+          service:
+            name: revamp-web-reader
+            port:
+              number: 443
+
+---
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: revamp-web-reader
+# spec:
+#   selector:
+#     matchLabels:
+#       app: revamp-web-reader
+#   template:
+#     metadata:
+#       labels:
+#         app: revamp-web-reader
+#     spec:
+#       containers:
+#         - name: server
+#           image: gcr.io/gramedia-digital-5a7c5/revamp-web-reader:master
+#           ports:
+#           - containerPort: 3000
