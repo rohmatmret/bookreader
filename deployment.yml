@@ -13,6 +13,6 @@ spec:
     spec:
       containers:
         - name: server
-          image: gcr.io/gramedia-digital-5a7c5/revamp-web-reader:master
+          image: gcr.io/gramedia-digital-5a7c5/revamp-web-reader:staging
           ports:
           - containerPort: 3000
