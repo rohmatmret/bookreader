@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const Authorized = () => {
-    const [accessToken, setAccessToken] = useState();
-    function useQuery() {
+    const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
 
@@ -17,7 +17,7 @@ const Authorized = () => {
             "client_id": "EbooksGramedia",
             "client_secret": "df4d91e0-c25a-432d-8945-20497eb8e5dc",
             "code": params ? params.get('code') : params,
-            "redirect_uri": "https://staging-baca.gramedia.com/authorized"
+            "redirect_uri": process.env.REACT_APP_BASE_URL_DOMAIN+"/authorized"
         }
         axios.post('https://auth.ovaltech.id/auth/token',payload, {headers: {'content-type': 'application/json'}})
         .then(response => {
@@ -31,12 +31,11 @@ const Authorized = () => {
         let payloadData = {
             "access_token": token ? token : ""
         }
-        axios.post('https://dev.apps-foundry.com/scoopcor/api/v1/auth/myvalue', payloadData)
+        axios.post(process.env.REACT_APP_BASE_URL+'auth/myvalue', payloadData)
         .then(response => {
             var res = response.data
             console.log(res)
             Cookies.set("token", res.realm.toUpperCase() + " " + res.access_token);
-            // Cookies.get("token")
             Cookies.set("username", res.first_name);
             Cookies.set("email", res.email)
             if(response.status === 200){
@@ -50,7 +49,7 @@ const Authorized = () => {
     }
 
     const ownedBuffet = () => {
-        axios.get("https://dev.apps-foundry.com/scoopcor/api/v1/owned_buffets",{
+        axios.get(process.env.REACT_APP_BASE_URL+"owned_buffets",{
           headers: {Authorization:Cookies.get('token')}
         })
         .then((res)=>{
@@ -70,19 +69,14 @@ const Authorized = () => {
               return offer
             })
             Cookies.set("offer", JSON.stringify(offer));
-            // var offerVar = setOffer(JSON.stringify(offer));
-            // dispatch(JSON.parse(offerVar));
-            // setLoading(false);
             window.location.href = "/dashboard";
           }else{
-            // setLoading(false);
             window.location.href = "/dashboard";
           }
         })
         .catch((err) => {
           console.log(err);
           alert(JSON.stringify(err));
-        //   setLoading(false);
         });
       }
 
@@ -91,8 +85,6 @@ const Authorized = () => {
     },[])
     return(
         <div>
-           {/* {encodeURIComponent(params)} */}
-           {/* {params?params.get('code') : params} */}
            Loading...
         </div>
     )

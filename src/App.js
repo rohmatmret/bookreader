@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import Header from "./components/Header";
 import SideMenu from "./components/SideMenu";
 import Greeting from './assets/Greeting.png'
@@ -6,6 +6,7 @@ import Greeting from './assets/Greeting.png'
 import "./App.css";
 
 function App() {
+  console.log(process.env.BASE_URL)
   return (
     <>
       <SideMenu />

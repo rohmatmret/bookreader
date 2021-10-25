@@ -4,8 +4,6 @@ import { React, useState } from "react";
 import axios from "axios";
 import { RefreshIcon } from "@heroicons/react/outline";
 import Cookies from "js-cookie";
-import { setOffer } from "../rootSlice";
-import {useDispatch} from 'react-redux';
 import LogoMyValue from '../assets/myvalue.png';
 const sha1 = require("js-sha1");
 
@@ -21,7 +19,6 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
   const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
-  const dispatch = useDispatch();
 
   const HashPassword = (password) => {
     const hash = sha1.create();
@@ -50,8 +47,6 @@ const LoginForm = () => {
           return offer
         })
         Cookies.set("offer", JSON.stringify(offer));
-        // var offerVar = setOffer(JSON.stringify(offer));
-        // dispatch(JSON.parse(offerVar));
         setLoading(false);
         window.location.href = "/dashboard";
       }else{
@@ -87,14 +82,13 @@ const LoginForm = () => {
       })
       .catch((err) => {
         console.log(err);
-        // alert(JSON.stringify(err));
         setLoading(false);
         setErrPassword(true);
       });
   };
 
   const handleSSOMyValue = () => {
-    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=https://staging-baca.gramedia.com/authorized&state=abc`)
+    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=${process.env.REACT_APP_BASE_URL_DOMAIN}/authorized&state=EbooksGramedia`)
   }
 
   return (

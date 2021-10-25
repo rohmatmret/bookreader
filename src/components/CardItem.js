@@ -11,7 +11,7 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params, modal 
   const dispatch = useDispatch();
   const offerBuffet = Cookies.get('offer') != null ? Cookies.get('offer') : "";
   const getPackage = offerBuffet !== "" ? JSON.parse(offerBuffet) : "";
-  const offerIds = getPackage ? getPackage.map((item, index)=>{
+  const offerIds = getPackage ? getPackage.map((item)=>{
     return Number(item.offerId);
   }): '';
 
@@ -25,6 +25,8 @@ const CardItem = ({ image, title, author,offerId, url, pageCount, params, modal 
   const showModal = () => {
     modal();
   }
+
+  console.log(url)
 
   return (
     <div className="container w-48 shadow-lg p-2 rounded-md bg-white lg:my-2 xl:my-auto">
