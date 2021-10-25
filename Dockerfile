@@ -1,7 +1,7 @@
 FROM node:14.16
 
 # install module
-RUN npm install -g npm@6.14.11
+# RUN npm install -g npm@6.14.11
 # RUN npm install --save @google-cloud/secret-manager
 
 # make the 'app' folder the current working directory
