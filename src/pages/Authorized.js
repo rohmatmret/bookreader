@@ -74,14 +74,15 @@ const Authorized = () => {
             if(uuid === cookiesUUID){
               window.location.href = "/dashboard";
             }else{
-              console.log('error')
+              console.log('invalid session')
+              window.location.href = "/login";
             }
             
           }else{
             if(uuid === cookiesUUID){
               window.location.href = "/dashboard";
             }else{
-              console.log('error')
+              window.location.href = "/login";
             }
           }
         })
