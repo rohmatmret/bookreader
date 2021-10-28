@@ -1,4 +1,4 @@
-FROM node:14.16
+FROM node:14.16-alpine
 
 # install module
 # RUN npm install -g npm@6.14.11
