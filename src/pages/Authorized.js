@@ -10,6 +10,8 @@ const Authorized = () => {
     }
 
     let params = useQuery();
+    let uuid = params ? params.get('state') : ''
+    let cookiesUUID = Cookies.get('uuid')
     
     let changeToken = async(params) => {
         let payload = {
@@ -69,9 +71,19 @@ const Authorized = () => {
               return offer
             })
             Cookies.set("offer", JSON.stringify(offer));
-            window.location.href = "/dashboard";
+            if(uuid === cookiesUUID){
+              window.location.href = "/dashboard";
+            }else{
+              console.log('invalid session')
+              window.location.href = "/login";
+            }
+            
           }else{
-            window.location.href = "/dashboard";
+            if(uuid === cookiesUUID){
+              window.location.href = "/dashboard";
+            }else{
+              window.location.href = "/login";
+            }
           }
         })
         .catch((err) => {
