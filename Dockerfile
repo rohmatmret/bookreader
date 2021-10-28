@@ -1,8 +1,8 @@
 FROM node:14.16
 
 # install module
-RUN npm install -g npm@6.14.11
-RUN npm install --save @google-cloud/secret-manager
+# RUN npm install -g npm@6.14.11
+# RUN npm install --save @google-cloud/secret-manager
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -21,8 +21,8 @@ COPY . .
 RUN npm run build
 
 # setting env
-ENV HOST=0.0.0.0
-ENV PORT=3000
+# ENV HOST=0.0.0.0
+# ENV PORT=3000
 
 EXPOSE 3000
 
