@@ -5,6 +5,7 @@ import axios from "axios";
 import { RefreshIcon } from "@heroicons/react/outline";
 import Cookies from "js-cookie";
 import LogoMyValue from '../assets/myvalue.png';
+import { v4 as uuidv4 } from 'uuid';
 const sha1 = require("js-sha1");
 
 require("dotenv").config();
@@ -19,6 +20,8 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
   const secretPassword = process.env.REACT_APP_NOT_SECRET_CODE;
+  const uuid = uuidv4();
+  Cookies.set("uuid", uuid)
 
   const HashPassword = (password) => {
     const hash = sha1.create();
@@ -88,7 +91,7 @@ const LoginForm = () => {
   };
 
   const handleSSOMyValue = () => {
-    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=${process.env.REACT_APP_BASE_URL_DOMAIN}/authorized&state=EbooksGramedia`)
+    window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=${process.env.REACT_APP_BASE_URL_DOMAIN}/authorized&state=${uuid}`)
   }
 
   return (
