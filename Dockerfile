@@ -1,4 +1,4 @@
-FROM node:14.16
+FROM node:14.16-alpine
 
 # install module
 # RUN npm install -g npm@6.14.11
@@ -11,7 +11,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # install project dependencies
-RUN npm install --silent
+# RUN npm install --silent
+RUN npm install
 
 #RUN npm outdated
 # copy project files and folders to the current working directory (i.e. 'app' folder)
