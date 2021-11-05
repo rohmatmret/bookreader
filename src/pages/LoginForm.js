@@ -92,6 +92,7 @@ const LoginForm = () => {
 
   const handleSSOMyValue = () => {
     window.open(`https://auth.ovaltech.id/auth/authorize?client_id=EbooksGramedia&redirect_uri=${process.env.REACT_APP_BASE_URL_DOMAIN}/authorized&state=${uuid}`)
+    window.close()
   }
 
   return (

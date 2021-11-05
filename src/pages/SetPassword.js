@@ -2,6 +2,7 @@ import image from '../assets/lupa_pass.png'
 import logo from '../assets/logo.png'
 import {useState} from 'react'
 import { useLocation } from "react-router-dom";
+import axios from 'axios'
 
 const SetPasswordPage = () => {
     const [password, setPassword] = useState('')
@@ -16,7 +17,20 @@ const SetPasswordPage = () => {
     }
     let params = useQuery();
     let paramsEmail = params ? params.get('email') : "";
-    console.log(paramsEmail)
+    const handleSetPassword = async (id) => {
+        let payload = {
+            email: paramsEmail,
+            password: password
+        }
+        axios
+        .post(process.env.REACT_APP_BASE_URL+"auth/myvalue/set-password", payload)
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+      };
     return(
         <div>
             <div className="lg:grid lg:grid-cols-2 lg:gap-10">
@@ -61,7 +75,7 @@ const SetPasswordPage = () => {
                         ""
                         }
                         <div className="text-center">
-                        <button className="bg-blue-500 px-14 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto font-nunito">
+                        <button className="bg-blue-500 px-14 py-2 mt-10 md:mt-24 rounded-md text-white font-bold flex gap-4 mx-auto font-nunito" onClick={handleSetPassword}>
                             Ubah Kata Sandi
                         </button>
                         </div>
