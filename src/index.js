@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 import NotFound from './pages/Notfound';
 import Authorized from "./pages/Authorized";
 import SetPasswordPage from "./pages/SetPassword";
+import Profile from "./pages/Profile";
 
 const isAuthenticated = Cookies.get('token')
 
@@ -29,6 +30,7 @@ ReactDOM.render(
           <Route path={["/set-password"]} exact render={()=><SetPasswordPage/>}/>
           <Route path={["/authorized"]} exact render={() => <Authorized/>}/>
           <Route path="/404" component={NotFound}/>
+          <Route path="/profile" component={Profile}/>
           <Route component={NotFound}/>
         </Switch>
       </BrowserRouter>
