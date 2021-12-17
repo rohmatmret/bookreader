@@ -1,6 +1,7 @@
 /* eslint-disable default-case */
 import { ChevronDownIcon, CheckIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
+import DatePicker from '../components/Datepicker'
 import axios from 'axios'
 
 const ValueOverview = () => {
@@ -8,15 +9,16 @@ const ValueOverview = () => {
     const [service, setService] = useState('')
     const [selGender, setSelGender] = useState('Jenis Kelamin')
     const [selWork, setSelWork] = useState('Pekerjaan')
-    const [selProvinsi, setSelProvinsi] = useState('provinsi')
-    const [provinceId, setProvinceId] = useState(0)
-    const [selKota, setSelKota] = useState('Kota/Kabupaten')
-    const [selKec, setSelKec] = useState('Kecamatan')
-    const [selKel, setSelKel] = useState('Keluraham')
+    const [selProvinsi, setSelProvinsi] = useState({title:'provinsi'})
+    const [selKota, setSelKota] = useState({title:'Kota/Kabupaten'})
+    const [selKec, setSelKec] = useState({title:'Kecamatan'})
+    const [selKel, setSelKel] = useState({village:'Kelurahan'})
     const [isActive, setIsActive] = useState(false)
     const [dataArray, setDataArray] = useState([])
     const [dataArrayCity, setDataArrayCity] = useState([])
     const [dataArrayDistrict, setDataArrayDistrict] = useState([])
+    const [dataZipCode, setDataZipCode] = useState([])
+    var payload = {}
 
     const toggleDropdown = (serv) => {
         setService(serv)
@@ -50,7 +52,7 @@ const ValueOverview = () => {
         axios.get('https://auth.ovaltech.id/v1/location/district/?city_id=' + id)
         .then((res) => {
             console.log(res, 'district')
-            // dataArrayDistrict(res.data)
+            setDataArrayDistrict(res.data)
         })
         .catch((err) => {
             console.log(err);
@@ -58,16 +60,17 @@ const ValueOverview = () => {
         });
     }
 
-    // const getDistrict = (id) => {
-    //     axios.get('https://auth.ovaltech.id/v1/location/zipcode/?district_id=' + id)
-    //     .then((res) => {
-    //         console.log(res)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //         alert(JSON.stringify(err));
-    //     });
-    // }
+    const getZipCode = (id) => {
+        axios.get('https://auth.ovaltech.id/v1/location/zipcode/?district_id=' + id)
+        .then((res) => {
+            console.log(res)
+            setDataZipCode(res.data)
+        })
+        .catch((err) => {
+            console.log(err);
+            alert(JSON.stringify(err));
+        });
+    }
 
 
 
@@ -135,24 +138,35 @@ const ValueOverview = () => {
     }
 
     const handleSetProvince = (e) => {
-        console.log(e)
-        setSelProvinsi(e.title)
+        setSelProvinsi(e)
         getCity(e.id)
         setDropdown(false)
     }
 
     const handleSetCity = (e) => {
-        console.log(e)
-        setSelKota(e.title)
+        setSelKota(e)
         getDistrict(e.id)
         setDropdown(false)
+    }
+
+    const handleSetDistrict = (e) => {
+        setSelKec(e)
+        getZipCode(e.id)
+        setDropdown(false)
+    }
+
+    const handleZipCode = (e) => {
+        setSelKel(e)
+        setDropdown(false)
+        console.log(selProvinsi)
+        console.log(selKota)
+        console.log(selKec)
+        console.log(selKel)
     }
 
     useEffect(() => {
         getProvice()
     },[])
-
-    console.log(selProvinsi)
 
     
     return (
@@ -275,9 +289,11 @@ const ValueOverview = () => {
                     </div>
                     <div className="bg-gray-200 mt-4 px-4 py-4 border-b border-dotted border-gray-500">
                         {/* <span className="block text-gray-500">Tanggal Lahir</span> */}
-                        <input placeholder="Tanggal Lahir"
+                        <input type="date" placeholder="Tanggal Lahir"
                             className="bg-gray-200 text-gray-500 outline-none w-full"
+                            onChange={(e)=> {console.log(e.target.value)}}
                         />
+                        {/* <DatePicker/> */}
                     </div>
                     <div className="bg-gray-200 mt-4 px-4 py-4 border-b border-dotted border-gray-500">
                         {/* <span className="block text-gray-500">Nomor KTP</span> */}
@@ -318,7 +334,7 @@ const ValueOverview = () => {
                     <div className="relative bg-gray-200 py-4 border-b border-dotted border-gray-500">
                         <div onClick={() => toggleDropdown('provinsi')} className="flex px-4 items-center justify-between">
                             <span className="bg-gray-200 text-gray-500 outline-none w-full">
-                                {selProvinsi}
+                                {selProvinsi.title}
                             </span>
                             <ChevronDownIcon className="h-5 w-5 text-gray-500" fill="currentColor"/>
                         </div>
@@ -340,7 +356,7 @@ const ValueOverview = () => {
                         {/* <span className="block text-gray-500">Jenis Kelamin</span> */}
                         <div onClick={() => toggleDropdown('kota')} className="flex px-4 items-center justify-between">
                             <span className="bg-gray-200 text-gray-500 outline-none w-full">
-                                {selKota}
+                                {selKota.title}
                             </span>
                             <ChevronDownIcon className="h-5 w-5 text-gray-500" fill="currentColor"/>
                         </div>
@@ -362,19 +378,20 @@ const ValueOverview = () => {
                         {/* <span className="block text-gray-500">Jenis Kelamin</span> */}
                         <div onClick={() => toggleDropdown('kec')} className="flex px-4 items-center justify-between">
                             <span className="bg-gray-200 text-gray-500 outline-none w-full">
-                                {selKec}
+                                {selKec.title}
                             </span>
                             <ChevronDownIcon className="h-5 w-5 text-gray-500" fill="currentColor"/>
                         </div>
                         {
                             (dropdown && service === 'kec') && <div className="absolute z-10 w-full mt-5 bg-white">
-                                <ul>
-                                    <li onClick={() => toggleSelect('Bululawang')} className="px-4 py-2 flex hover:bg-blue-500 hover:text-white justify-between items-center">
-                                        Bululawang {(selKec === 'Bululawang' && isActive) && <CheckIcon className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor"/>}
-                                    </li>
-                                    <li onClick={() => toggleSelect('Gondanglegi')} className="px-4 py-2 flex hover:bg-blue-500 hover:text-white justify-between items-center">
-                                        Gondanglegi {(selKec === 'Gondanglegi' && isActive) && <CheckIcon className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor"/>}
-                                    </li>
+                                <ul className="overflow-scroll h-56">
+                                    {dataArrayDistrict.map((item) => {
+                                        return (
+                                            <li className="px-4 py-2 flex hover:bg-blue-500 hover:text-white justify-between items-center" key={item.id} onClick={(e)=> {handleSetDistrict(item)}}>
+                                                {item.title}
+                                            </li>
+                                        )
+                                    })}
                                 </ul>
                             </div>
                         }
@@ -383,19 +400,20 @@ const ValueOverview = () => {
                         {/* <span className="block text-gray-500">Jenis Kelamin</span> */}
                         <div onClick={() => toggleDropdown('kel')} className="flex px-4 items-center justify-between">
                             <span className="bg-gray-200 text-gray-500 outline-none w-full">
-                                {selKel}
+                                {selKel.village}
                             </span>
                             <ChevronDownIcon className="h-5 w-5 text-gray-500" fill="currentColor"/>
                         </div>
                         {
                             (dropdown && service === 'kel') && <div className="absolute z-10 w-full mt-5 bg-white">
-                                <ul>
-                                    <li onClick={() => toggleSelect('Kuwolu')} className="px-4 py-2 flex hover:bg-blue-500 hover:text-white justify-between items-center">
-                                        Kuwolu {(selKec === 'Kuwolu' && isActive) && <CheckIcon className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor"/>}
-                                    </li>
-                                    <li onClick={() => toggleSelect('Krebet')} className="px-4 py-2 flex hover:bg-blue-500 hover:text-white justify-between items-center">
-                                        Krebet {(selKec === 'Krebet' && isActive) && <CheckIcon className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor"/>}
-                                    </li>
+                                <ul className="overflow-scroll h-56">
+                                    {dataZipCode.map((item) => {
+                                        return (
+                                            <li className="px-4 py-2 flex hover:bg-blue-500 hover:text-white justify-between items-center" key={item.id} onClick={(e)=> {handleZipCode(item)}}>
+                                                {item.village}
+                                            </li>
+                                        )
+                                    })}
                                 </ul>
                             </div>
                         }

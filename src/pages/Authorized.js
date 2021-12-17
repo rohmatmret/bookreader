@@ -24,6 +24,7 @@ const Authorized = () => {
         axios.post('https://auth.ovaltech.id/auth/token',payload, {headers: {'content-type': 'application/json'}})
         .then(response => {
             var data = response.data
+            Cookies.set('myValueToken', data.access_token)
             getUserAPI(data.access_token);
         })
         .catch(err => console.log(err))
